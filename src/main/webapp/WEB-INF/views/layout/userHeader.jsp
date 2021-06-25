@@ -21,6 +21,33 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 
+<!-- 카카오 api 초기화 -->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script type="text/javascript">
+// SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+Kakao.init('1edcb61a473aa9342e8cfcb704cd0b80');
+// SDK 초기화 여부를 판단합니다. 성공시 true
+console.log(Kakao.isInitialized());
+</script>
+
+<!-- 카카오 api 연결 끊기 로그아웃  -->
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#logout").click(function(){	
+		Kakao.API.request({
+			  url: '/v1/user/unlink',
+			  success: function(response) {
+			    console.log(response);
+			    $(location).attr("href","/login/logout") // 로그아웃 링크 연결
+			  },
+			  fail: function(error) {  
+			    console.log(error);
+			    $(location).attr("href","/login/logout") // 로그아웃 링크 연결
+			  },
+			});		
+	})	
+})
+</script>
 
 <style type="text/css">
 /* 폰트 설정  */
@@ -182,7 +209,7 @@ body{
       	 			<li style="border: 0px; width: 100px;"><a href="#">회원가입</a></li>
       	 		</c:if>	
       	 		<c:if test="${login}">
-      	 			<li style="border: 0px; width: 100px;"><a href="/login/logout" >로그아웃</a></li>
+      	 			<li style="border: 0px; width: 100px;"><a href="#" id="logout">로그아웃</a></li>
       	 			<li style="border: 0px; width: 100px;"><a href="/" >마이페이지</a></li>    
       	 		</c:if>	
     			</ul>

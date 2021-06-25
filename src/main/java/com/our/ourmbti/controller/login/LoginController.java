@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.our.ourmbti.dto.User;
 import com.our.ourmbti.service.login.face.LoginService;
@@ -81,6 +82,25 @@ public class LoginController {
 		session.invalidate();
 		
 		return "redirect:/";
+	}
+	
+	
+	//카카오톡 GET 로그인 컨트롤러
+	@GetMapping(value="/login/kakaoLogin")
+	public void kakaoLogin() {}
+
+	//카카오톡 Post 로그인 컨트롤러
+	@PostMapping(value="/login/kakaoLogin")
+	public String kakaoLoginRes(String kakaoEmail) {	
+
+		//로그인 정보 체크
+		if(kakaoEmail == null || kakaoEmail.equals("")) {
+			return "/login/login";
+		}else {
+			
+		}
+		
+		return "/main/main";
 	}
 	
 }
