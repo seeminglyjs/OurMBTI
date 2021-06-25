@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.our.ourmbti.dao.login.face.LoginDao">
+ 
+ 	<select id="selectLoginUser" parameterType="hashmap" resultType="int">
+ 		select count(*) from m_user where u_id = #{id} and u_pw = #{pw}
+ 	</select>
+ 	
+ 	<select id="selectUserInfo" parameterType="hashmap" resultType="User">
+ 		select u_no, u_id, u_grade, u_nick, u_email, u_mbti from m_user where u_id = #{id} and u_pw = #{pw}
+ 	</select>
+ 
+</mapper>
