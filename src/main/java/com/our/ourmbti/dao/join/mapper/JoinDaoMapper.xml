@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.our.ourmbti.dao.join.face.JoinDao">
+ 
+	<select id="selectIdOverlap" parameterType="String" resultType="int">
+ 		select count(*) from m_user where u_id = #{id}
+	</select>
+
+	<select id="selectEmailOverlap" parameterType="String" resultType="int">
+ 		select count(*) from m_user where u_email = #{email}
+	</select>
+ 
+	<select id="selectNickOverlap" parameterType="String" resultType="int">
+ 		select count(*) from m_user where u_nick = #{nick}
+	</select>
+ 
+ 	<select id="selectPhoneOverlap" parameterType="String" resultType="int">
+ 		select count(*) from m_user where u_phone = #{phone}
+	</select>
+	
+	<insert id="insertJoinUser" parameterType="hashmap">
+		insert into m_user(u_no, u_grade, u_id, u_pw, u_name, u_phone, u_nick, u_email, u_address, u_post, u_detail_address, u_mbti, u_join_date ) 
+		values( m_user_seq.nextval, 'U', #{id}, #{pw}, #{name}, #{phone}, #{nick}, #{email}, #{address}, #{post}, #{detailaddress}, #{mbti}, sysdate)
+	</insert>
+		 
+ 	<select id="selectJoinUserCount" parameterType="String" resultType="int">
+ 		select count(*) from m_user where u_id = #{id}
+	</select>
+	
+</mapper>
