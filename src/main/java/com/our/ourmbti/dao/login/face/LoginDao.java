@@ -12,4 +12,7 @@ public interface LoginDao {
 	//세션할당을 위해 유저 정보를 가져오는 메소드
 	public User selectUserInfo(HashMap<String, String> map);
 
+	//이메일을 기준으로 관련 유저의 정보를 가져온다.
+	public User selectUserByEmail(String kakaoEmail);
+
 }

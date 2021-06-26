@@ -34,4 +34,13 @@ public class LoginServiceImpl implements LoginService {
 		return user;
 	}
 	
+	@Override // 카카오톡 로그인 유저의 정보를 가져온다.
+	public User selectUserByEmail(String kakaoEmail) {
+		
+		//유저 정보를 가져오는 메소드
+		User user = loginDao.selectUserByEmail(kakaoEmail);
+		
+		return user;
+	}
+	
 }

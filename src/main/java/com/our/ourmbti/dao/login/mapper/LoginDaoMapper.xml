@@ -13,5 +13,9 @@
  	<select id="selectUserInfo" parameterType="hashmap" resultType="User">
  		select u_no, u_id, u_grade, u_nick, u_email, u_mbti from m_user where u_id = #{id} and u_pw = #{pw}
  	</select>
+
+ 	<select id="selectUserByEmail" parameterType="String" resultType="User">
+ 		select u_no, u_id, u_grade, u_nick, u_email, u_mbti from m_user where u_email = #{kakaoEmail}
+ 	</select>
  
 </mapper>
