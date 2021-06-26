@@ -89,7 +89,7 @@ function loginDataCheck (){
 <style type="text/css">
 /* loginDiv Css 영역 */
 #loginDiv{
-	width: 500px;
+	width: 600px;
 	margin: 100px auto;
 	padding: 50px;
 	

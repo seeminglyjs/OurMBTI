@@ -206,7 +206,7 @@ body{
   				<ul style="border: 1px solid #98c1d9; border-radius: 20px;">
   				<c:if test="${empty login }"><!-- 로그인 여부에 따라 다르게 보이게 설정 로그인하면(true) -->
       	 			<li style="border: 0px; width: 100px; margin-top: 5px"><a href="/login/login" >로그인</a></li>
-      	 			<li style="border: 0px; width: 100px;"><a href="#">회원가입</a></li>
+      	 			<li style="border: 0px; width: 100px;"><a href="/join/join">회원가입</a></li>
       	 		</c:if>	
       	 		<c:if test="${login}">
       	 			<li style="border: 0px; width: 100px;"><a href="#" id="logout">로그아웃</a></li>
