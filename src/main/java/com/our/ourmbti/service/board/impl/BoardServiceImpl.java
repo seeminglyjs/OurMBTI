@@ -90,4 +90,14 @@ public class BoardServiceImpl implements BoardService {
 		
 		return list;
 	}
+	
+	
+	@Override // 게시글 상세 정보를 가져오는 메소드
+	public HashMap<String, Object> getBoardInfo(int bNo) {
+		
+		//게시판 상세 정보를 가져온다.
+		HashMap<String, Object> map = boardDao.selectBoardDetail(bNo);
+		
+		return map;
+	}
 }

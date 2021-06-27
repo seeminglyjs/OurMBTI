@@ -59,7 +59,7 @@ public class BoardPaging {
 		//기본값 설정
 		if(curPage == 0)	setCurPage(1);//첫 페이지를 기본 페이지로 설정
 		if(pageCount == 0)	setPageCount(10);//화면에 보여질 페이지 수 기본설정
-		if(listCount == 0)	setListCount(15);//화면에 보여질 게시글 수 기본설정
+		if(listCount == 0)	setListCount(20);//화면에 보여질 게시글 수 기본설정
 
 		//총 페이지 수 계산
 		totalPage = totalCount / listCount;

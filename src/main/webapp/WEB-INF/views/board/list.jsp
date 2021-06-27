@@ -51,7 +51,7 @@
 				[직업]
 				</c:otherwise>
 			</c:choose>
-			${boardInfo.B_TITLE }</td>		
+			<a href="/board/detail?boardNo=${boardInfo.B_NO }">${boardInfo.B_TITLE }</a></td>		
 			<td style="width: 15%">${boardInfo.U_NICK }</td>				
 			<td style="width: 10%">${boardInfo.B_HIT }</td>
 			<c:if test="${boardInfo.B_WRITE_DATE eq boardInfo.B_UPDATE_DATE}">

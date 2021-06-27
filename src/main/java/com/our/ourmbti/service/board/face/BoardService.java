@@ -9,6 +9,10 @@ public interface BoardService {
 
 	public HashMap<String, Object> getPaging(HttpServletRequest request);
 
+	// 게시글 리스트 정보를 가져오는 메소드
 	public List<HashMap<String, Object>> getList(HashMap<String, Object> map);
+
+	//게시글 상세 정보를 가져오는 메소드
+	public HashMap<String, Object> getBoardInfo(int bNo);
 
 }
