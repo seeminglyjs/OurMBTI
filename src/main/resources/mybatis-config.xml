@@ -22,6 +22,7 @@
 	<!-- 유저 DTO typeAliase 지정  -->
 	<typeAliases>
 		<typeAlias type="com.our.ourmbti.dto.User" alias="User"/>
+		<typeAlias type="com.our.ourmbti.dto.Board" alias="Board"/>
 	</typeAliases>
 	
 </configuration>

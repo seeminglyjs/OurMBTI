@@ -187,9 +187,9 @@ body{
  			</li>
   			<li><a href="#">Board</a>
     			<ul>
-      	 			<li><a href="#">자유게시판</a></li>
-       				<li><a href="#">경험게시판</a></li>
-       				<li><a href="#">진로게시판</a></li>
+      	 			<li><a href="/board/list?category=F">자유게시판</a></li>
+       				<li><a href="/board/list?category=E">경험게시판</a></li>
+       				<li><a href="/board/list?category=J">진로게시판</a></li>
     			</ul>
 			</li>
 		</ul>
