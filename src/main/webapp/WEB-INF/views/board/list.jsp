@@ -38,6 +38,7 @@
 		<tr>
 			<td style="width: 10%">${boardInfo.B_NO }</td>			
 			<td style="width: 50%">
+			<a href="/board/detail?boardNo=${boardInfo.B_NO }">
 			<c:choose>
 				<c:when test='${boardInfo.B_TYPE eq "F" }'>
 				[자유] 
@@ -51,7 +52,7 @@
 				[직업]
 				</c:otherwise>
 			</c:choose>
-			<a href="/board/detail?boardNo=${boardInfo.B_NO }">${boardInfo.B_TITLE }</a></td>		
+			${boardInfo.B_TITLE }</a></td>		
 			<td style="width: 15%">${boardInfo.U_NICK }</td>				
 			<td style="width: 10%">${boardInfo.B_HIT }</td>
 			<c:if test="${boardInfo.B_WRITE_DATE eq boardInfo.B_UPDATE_DATE}">
