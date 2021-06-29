@@ -16,6 +16,50 @@
 
 <div>
 
+
+<hr>
+
+
+<!--검색 및 카테고리 항목 div -->
+<div>
+
+<!--카테고리 Div -->
+<div class="pull-left">
+	<select class="form-group">
+		<option value="F">자유게시판</option>
+		<option value="E">경험게시판</option>
+		<option value="J">진로게시판</option>	
+	</select>
+</div>
+<div class="clear-fix"></div>
+
+<!-- 검색 Form Div  -->
+<div class="pull-right">
+<form  class="form-inline" action="/board/list" method="gey">
+	<div class="form-group">
+		<select class="">
+			<option value="F">자유게시판</option>
+			<option value="E">경험게시판</option>
+			<option value="J">진로게시판</option>	
+		</select>
+	</div>
+    <div class="form-group">
+    	<input type="text" class="form-control" id="searchText" name="searchText" placeholder="검색내용">
+  		<button class="btn btn-sm btn-default">검색</button>
+  	</div>
+  
+</form>
+</div>
+<div class="clear-fix"></div>
+
+
+
+
+
+
+
+</div>
+
 <!--테이블 리스트 DIV  -->
 <div id="listTableDiv">
 <table class="table table-striped text-center">
@@ -68,6 +112,14 @@
 	</c:choose>
 </table>
 </div>
+
+<!-- 로그인 시 글등록이 보이도록 하는 div -->
+<div class="text-right">
+	<c:if test="${not empty login }">
+	<a href="/board/write"><button type="button" class="btn btn-sm btn-default">글작성</button></a>
+	</c:if>
+</div>
+<hr>
 
 
 <%@include file="/WEB-INF/views/util/boardPaging.jsp" %>
