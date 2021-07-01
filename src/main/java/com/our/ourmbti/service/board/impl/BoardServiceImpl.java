@@ -9,9 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.our.ourmbti.dao.board.face.BoardDao;
 import com.our.ourmbti.dto.Board;
+import com.our.ourmbti.dto.User;
 import com.our.ourmbti.service.board.face.BoardService;
 import com.our.ourmbti.util.BoardPaging;
 
@@ -108,5 +111,22 @@ public class BoardServiceImpl implements BoardService {
 		HashMap<String, Object> map = boardDao.selectBoardDetail(bNo);
 		
 		return map;
+	}
+	
+	@Override //게시글을 작성하는 메소드
+	@Transactional //트랜잭션 체크 어노테이션
+	public void writerBoard(MultipartHttpServletRequest request, User user) {
+
+		//게시판 객체에 게시글 정보를 담는다.
+		Board board = new Board();
+		board.setbTitle(request.getParameter("title"));
+		board.setbContent(request.getParameter("content"));
+		board.setbType(request.getParameter("boardCategory"));
+		board.setuNo(user.getuNo());
+		
+		//DB에 게시글 정보를 기록한다.
+		boardDao.insertBoardInfo(board);
+		
+		
 	}
 }

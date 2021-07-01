@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.our.ourmbti.dto.User;
+
 public interface BoardService {
 
 	public HashMap<String, Object> getPaging(HttpServletRequest request);
@@ -17,5 +21,8 @@ public interface BoardService {
 
 	//게시글 조회수를 상승시키는 메소드
 	public void plusHit(int bNo);
+
+	//게시글을 작성하는 메소드
+	public void writerBoard(MultipartHttpServletRequest request, User user);
 
 }

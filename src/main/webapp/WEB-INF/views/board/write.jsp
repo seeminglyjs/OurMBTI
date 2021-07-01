@@ -10,14 +10,23 @@
 
 <script type="text/javascript">
 
-function check(){
-	// 제목 인풋창 정규식 체크		
-		var title = /^[0-9a-zA-Z가-힣!@#$%^&*()<>?/\+-]{5,20}$/i
-		if(!title.test($("#title").val())){
-				alert("제목은 5글자 이상 20이하 입력해야 합니다.")
-				return false;
+$(document).ready(function(){
+
+	// 글작성 클릭시
+	$("#btnSave").click(function(){
+		//스마트에디터의 내용을 <textare>에 적용하기
+		var check = submitContents( $("#btnSave") );
+
+		if(check){
+			console.log(check)
+			console.log("등록!!!!!")
+			$("form").submit()
 		}
-}
+		
+	})
+	
+})	
+
 </script>
 
 
@@ -92,10 +101,10 @@ function check(){
 
 <hr>
 <div id="writeDiv">
-<form action="/board/write" method="post" enctype="multipart/form-data" onsubmit="return check()">
+<form action="/board/write" method="post" enctype="multipart/form-data" onsubmit="">
 
 	<div class="form-group">
-		<select class="form-control input-sm" id="boardCategory" style="width: 15%;">
+		<select class="form-control input-sm" id="boardCategory" name="boardCategory" style="width: 15%;">
 			<option value="F">자유게시판</option>
 			<option value="E">경험게시판</option>
 			<option value="J">진로게시판</option>
@@ -117,7 +126,7 @@ function check(){
 	
 	<!-- 게시글 내용영역  -->
 	<div style="margin-top: 5px;" id="contentDiv">
-		<textarea class="form-control" id="content" name="content" rows="25"></textarea>	
+		<textarea class="form-control" id="ir1" name="content" rows="25"></textarea>	
 	</div>
 	
 	
@@ -126,7 +135,7 @@ function check(){
 		
 	<!-- 게시글 페이지 이동 영역 -->
 	<div class="form-group text-center">
-	<button type="submit" class="btn btn-sm btn-primary">글등록</button>
+	<button type="button" class="btn btn-sm btn-primary" id="btnSave">등록</button>
 	<button type="button" class="btn btn-sm btn-default" onclick="history.back()">뒤로</button>	
 	</div>
 		
@@ -140,7 +149,7 @@ function check(){
 	var oEditors = [];
 	nhn.husky.EZCreator.createInIFrame({
 	 oAppRef: oEditors,
-	 elPlaceHolder: "content",
+	 elPlaceHolder: "ir1",
 	 sSkinURI: "/resources/se2/SmartEditor2Skin.html",
 	 fCreator: "createSEditor2"
 	});
@@ -149,11 +158,30 @@ function check(){
 	// ‘저장’ 버튼을 누르는 등 저장을 위한 액션을 했을 때 submitContents가 호출된다고 가정한다.
 function submitContents(elClickedObj) {
 	 // 에디터의 내용이 textarea에 적용된다.
-	 oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+	 oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
 	
-	 // 에디터의 내용에 대한 값 검증은 이곳에서
-	 // document.getElementById("ir1").value를 이용해서 처리한다.
-	
+ 	// 제목 인풋창 정규식 체크		
+	var title = document.getElementById("title").value;
+ 	if(title == null || title == ""){
+			alert("제목을 입력해주세요.")
+			return false;
+	}else{
+		 // 에디터의 내용에 대한 값 검증은 이곳에서
+		 // document.getElementById("ir1").value를 이용해서 처리한다.
+		 var content = document.getElementById("ir1").value;
+		
+		 content = content.replace(/&nbsp;/gi,"");
+		 content = content.replace(/<br>/gi,"");
+		 content = content.replace(/ /gi,"");
+		
+		 if(content == "<p><\/p>" || Text == ""){
+			 alert("내용을 입력해주세요.")
+			 return false;
+		 }else{
+				return true;
+		 }	
+	}
+	 
 	 try {
 	     elClickedObj.form.submit();
 	 } catch(e) {}

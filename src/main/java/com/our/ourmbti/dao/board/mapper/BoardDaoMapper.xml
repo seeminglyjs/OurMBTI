@@ -28,6 +28,9 @@
 		update m_board set b_hit = b_hit + 1 where b_no = #{bNo}
 	</update>
 	
+	<insert id="insertBoardInfo" parameterType="Board">
+		insert into m_board(b_no, u_no, b_title, b_content, b_type) values(m_board_seq.nextval, #{uNo}, #{bTitle}, #{bContent}, #{bType})
+	</insert>
 	
 
 </mapper>

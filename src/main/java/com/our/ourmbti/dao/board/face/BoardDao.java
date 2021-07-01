@@ -3,6 +3,8 @@ package com.our.ourmbti.dao.board.face;
 import java.util.HashMap;
 import java.util.List;
 
+import com.our.ourmbti.dto.Board;
+
 public interface BoardDao {
 
 	// 전체 게시글 수를 카운트 하는 메소드
@@ -16,5 +18,8 @@ public interface BoardDao {
 
 	//게시글 조회수를 + 1시키는 메소드
 	public void updateHit(int bNo);
+
+	//게시글 글쓰기를 구현한 메소드
+	public void insertBoardInfo(Board board);
 
 }

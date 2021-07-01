@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.our.ourmbti.dto.User;
 import com.our.ourmbti.service.board.face.BoardService;
 
 
@@ -81,24 +83,39 @@ public class BoardController {
 	
 	//게시판 글쓰기 Post 컨트롤러
 	@PostMapping(value="/board/write")
-	public String writeRes(MultipartHttpServletRequest request) {
+	public String writeRes(MultipartHttpServletRequest request, HttpSession session) {
 		
 		String boardCategory = request.getParameter("boardCategory");
 		String title = request.getParameter("title");
-		String content = request.getParameter("content");
+		
+		//현재 세션 유저정보를 가져온다.
+		User user =(User) session.getAttribute("user");
+
+	
+		//비로그인 유저 글작성시
+		if(user == null) {
+			return "redirect:/board/list";
+		}else {
+			logger.info("****************************************");
+			logger.info("{}",user.getuNo());
+		}
+		
 		
 		//파라미터 null 여부 체크
-		if(boardCategory == null || title == null || content == null) {
-			return "/board/list";
+		if(boardCategory == null || title == null) {
+			return "redirect:/board/list";
 		}
 		
 		//파라미터 빈문자 여부 체크
-		if(boardCategory.equals("") || title.equals("") || content.equals("")) {
-			return "/board/list";
+		if(boardCategory.equals("") || title.equals("")) {
+			return "redirect:/board/list";
 		}
 		
+		//게시글을 작성하는 메소드
+		boardService.writerBoard(request, user);
 		
-		return "/board/list";
+		
+		return "redirect:/board/list";
 	}
 	
 	
