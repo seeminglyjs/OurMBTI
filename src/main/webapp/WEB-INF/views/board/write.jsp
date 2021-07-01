@@ -120,7 +120,7 @@ $(document).ready(function(){
 	<!-- 파일 업로드 -->
 	<div class="filebox text-right"> 
 		<label for="uploadFiles">이미지 업로드</label> 
-		<input multiple="multiple" type="file" id="uploadFiles" accept="image/*"> 
+		<input multiple="multiple" type="file" id="uploadFiles" name = "uploadFiles" accept="image/*"> 
 	</div>
 	
 	

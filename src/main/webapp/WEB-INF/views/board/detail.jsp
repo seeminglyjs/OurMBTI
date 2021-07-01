@@ -81,6 +81,15 @@
 	
 	<!-- 게시글 내용영역  -->
 	<div style="margin-top: 50px;" id="contentDiv">
+	
+	<!-- 게시글에 등록된 이미지가 있으면  -->
+	<c:if test="${not empty fileNameList }">
+		<c:forEach items="${fileNameList}" var="img">
+			<div class="imgDiv">
+			<img src="/upload/${img }" alt="이미지 찾을 수 없음" style="width: 45%; height: 45%; border: 1px solid #ccc; margin-bottom: 10px"/>
+			</div>
+		</c:forEach>
+	</c:if>
 	${boardInfo.B_CONTENT }	
 	</div>
 	

@@ -32,5 +32,17 @@
 		insert into m_board(b_no, u_no, b_title, b_content, b_type) values(m_board_seq.nextval, #{uNo}, #{bTitle}, #{bContent}, #{bType})
 	</insert>
 	
+	<select id="lastBoardNo" resultType="int">
+		select max(b_no) from m_board
+	</select>
+	
+	<insert id="insertBoardImgInfo" parameterType="BoardImg">
+		insert into m_board_img(bi_no, b_no, bi_origin_filename, bi_stored_filename, bi_size, bi_content_type) 
+		values(m_board_img_seq.nextval, #{bNo}, #{biOriginFilename}, #{biStoredFilename}, #{biSize}, #{biContentType})
+	</insert>
+
+	<select id="selectBoardImgInfo" parameterType="int" resultType="BoardImg">
+		select * from m_board_img where b_no = #{bNo}
+	</select>
 
 </mapper>

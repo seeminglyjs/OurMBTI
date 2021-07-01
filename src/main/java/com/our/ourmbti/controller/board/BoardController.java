@@ -1,5 +1,6 @@
 package com.our.ourmbti.controller.board;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.our.ourmbti.dto.BoardImg;
 import com.our.ourmbti.dto.User;
 import com.our.ourmbti.service.board.face.BoardService;
 
@@ -70,8 +72,23 @@ public class BoardController {
 		//유저와 게시글정보의 조인 결과를 가져오는 메소드
 		HashMap <String, Object> map = boardService.getBoardInfo(bNo);
 		
+		//게시판 이미지 정보를 가져오는 메소드
+		List<BoardImg> boardImgList = boardService.getBoardImgInfo(bNo);
+		
+		List<String> fileNameList = new ArrayList<String>();
+		
+		for(int i = 0; i < boardImgList.size(); i++) {
+			fileNameList.add(boardImgList.get(i).getBiStoredFilename());
+		}
+		
+		
 		//게시글 정보 전달
 		model.addAttribute("boardInfo", map);
+		
+		//이미지가 저장되어 있는지 체크
+		if(!fileNameList.isEmpty() && fileNameList.size() > 0) {
+			model.addAttribute("fileNameList", fileNameList);
+		}
 		
 		return "/board/detail";
 		

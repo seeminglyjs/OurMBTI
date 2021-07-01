@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.our.ourmbti.dto.Board;
+import com.our.ourmbti.dto.BoardImg;
 
 public interface BoardDao {
 
@@ -21,5 +22,14 @@ public interface BoardDao {
 
 	//게시글 글쓰기를 구현한 메소드
 	public void insertBoardInfo(Board board);
+
+	//작성된 게시글 번호를 가져오는 메소드
+	public int lastBoardNo();
+
+	//파일 이미지 정보 DB에 저장
+	public void insertBoardImgInfo(BoardImg boardImg);
+
+	//게시판 이미지 정보를 가져오는 메소드
+	public List<BoardImg> selectBoardImgInfo(int bNo);
 
 }
