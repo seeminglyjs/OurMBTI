@@ -2,6 +2,26 @@
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/layout/userHeader.jsp" %>
 
+<!--스마트 에디터 스크립트 라이브러리 불러오기  -->
+<script type="text/javascript" src="/resources/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+
+
+
+
+<script type="text/javascript">
+
+function check(){
+	// 제목 인풋창 정규식 체크		
+		var title = /^[0-9a-zA-Z가-힣!@#$%^&*()<>?/\+-]{5,20}$/i
+		if(!title.test($("#title").val())){
+				alert("제목은 5글자 이상 20이하 입력해야 합니다.")
+				return false;
+		}
+}
+</script>
+
+
+
 
 <style type="text/css">
 
@@ -19,35 +39,125 @@
 	min-height: 350px;
 }
 
+
+/* 파일업로드 css 부여하기 */
+.filebox label { 
+	display: inline-block; 
+	padding: .5em .75em; 
+	color: white; 
+	font-size: inherit; 
+	line-height: normal; 
+	vertical-align: middle; 
+	background-color: #98c1d9; 
+	cursor: pointer; 
+	border: 1px solid #ebebeb; 
+	border-bottom-color: #e2e2e2; 
+	border-radius: .25em; 
+	} 
+
+.filebox label:hover{
+	text-decoration: underline;
+}
+
+
+.filebox input[type="file"] { 
+/* 파일 필드 숨기기 */ 
+	position: absolute; 
+	width: 1px; 
+	height: 1px; 
+	padding: 0; 
+	margin: -1px; 
+	overflow: hidden; 
+	clip:rect(0,0,0,0); 
+	border: 0; 
+	}
+
+
+/* 제목창 테두리 제거 */
+#title {
+	 border:none;
+     border-top: 0;
+     border-right: 0;
+     border-left: 0;
+
+     -webkit-box-shadow: none;
+     box-shadow: none;
+     
+     font-size: 23px;
+     
+}
+
 </style>
 
 
 <hr>
 <div id="writeDiv">
+<form action="/board/write" method="post" enctype="multipart/form-data" onsubmit="return check()">
+
+	<div class="form-group">
+		<select class="form-control input-sm" id="boardCategory" style="width: 15%;">
+			<option value="F">자유게시판</option>
+			<option value="E">경험게시판</option>
+			<option value="J">진로게시판</option>
+		</select>
+	</div>
 	
-	<!--게시글 상세보기 제목  -->
-	<div class="text-center" style="border-bottom: 1px solid #98c1d9; margin-bottom: 15px;">
-	<input type="text" id="title" name="title" placeholder="제목입력">
+	<!--게시글 제목  -->
+	<div class="form-group" style="border-bottom: 1px solid #98c1d9;">
+		<input type="text" class="form-control input-lg" id="title" name="title" placeholder="제목을 입력해주세요.">
 	<br>
 	</div>
-
-		
-	<!-- 게시글 내용영역  -->
-	<div style="margin-top: 50px;" id="contentDiv">
-	<textarea id="content" name="content" cols="20" rows="20"></textarea>	
+	
+	<!-- 파일 업로드 -->
+	<div class="filebox text-right"> 
+		<label for="uploadFiles">이미지 업로드</label> 
+		<input multiple="multiple" type="file" id="uploadFiles" accept="image/*"> 
 	</div>
 	
+	
+	<!-- 게시글 내용영역  -->
+	<div style="margin-top: 5px;" id="contentDiv">
+		<textarea class="form-control" id="content" name="content" rows="25"></textarea>	
+	</div>
+	
+	
+	
+	<hr>
 		
 	<!-- 게시글 페이지 이동 영역 -->
-	<div class="text-right">
-	<a href="/board/list"><button type="button" class="btn btn-sm btn-primary" onclick="history.back()">글목록</button></a>
+	<div class="form-group text-center">
+	<button type="submit" class="btn btn-sm btn-primary">글등록</button>
 	<button type="button" class="btn btn-sm btn-default" onclick="history.back()">뒤로</button>	
 	</div>
+		
 	
-
+</form>
 </div>
 
 
-
+<!-- 스마트 에디터 스크립트 코드  -->
+<script type="text/javascript">
+	var oEditors = [];
+	nhn.husky.EZCreator.createInIFrame({
+	 oAppRef: oEditors,
+	 elPlaceHolder: "content",
+	 sSkinURI: "/resources/se2/SmartEditor2Skin.html",
+	 fCreator: "createSEditor2"
+	});
+	
+	
+	// ‘저장’ 버튼을 누르는 등 저장을 위한 액션을 했을 때 submitContents가 호출된다고 가정한다.
+function submitContents(elClickedObj) {
+	 // 에디터의 내용이 textarea에 적용된다.
+	 oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+	
+	 // 에디터의 내용에 대한 값 검증은 이곳에서
+	 // document.getElementById("ir1").value를 이용해서 처리한다.
+	
+	 try {
+	     elClickedObj.form.submit();
+	 } catch(e) {}
+}
+</script>
 
 <%@include file="/WEB-INF/views/layout/userFooter.jsp" %>

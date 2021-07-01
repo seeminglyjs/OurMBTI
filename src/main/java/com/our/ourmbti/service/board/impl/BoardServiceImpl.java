@@ -91,6 +91,15 @@ public class BoardServiceImpl implements BoardService {
 		return list;
 	}
 	
+
+	@Override // 게시글 조회수를 상승시키는 메소드
+	public void plusHit(int bNo) {
+		
+		//게시글 조회수를 + 1 하는 메소드
+		boardDao.updateHit(bNo);
+		
+	}
+	
 	
 	@Override // 게시글 상세 정보를 가져오는 메소드
 	public HashMap<String, Object> getBoardInfo(int bNo) {

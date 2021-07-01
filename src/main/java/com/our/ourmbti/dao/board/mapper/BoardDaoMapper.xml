@@ -23,5 +23,11 @@
 		select u_nick, b1.* from m_user m, (select * from m_board where b_no = #{bNo}) b1
 		where m.u_no = b1.u_no
 	</select>
+	
+	<update id="updateHit" parameterType="int">
+		update m_board set b_hit = b_hit + 1 where b_no = #{bNo}
+	</update>
+	
+	
 
 </mapper>

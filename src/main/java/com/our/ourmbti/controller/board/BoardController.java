@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.our.ourmbti.service.board.face.BoardService;
 
@@ -61,6 +62,9 @@ public class BoardController {
 			return "/board/list";
 		}
 		
+		// 게시글 조회수를 상승시키는 메소드
+		boardService.plusHit(bNo);
+		
 		//유저와 게시글정보의 조인 결과를 가져오는 메소드
 		HashMap <String, Object> map = boardService.getBoardInfo(bNo);
 		
@@ -77,7 +81,23 @@ public class BoardController {
 	
 	//게시판 글쓰기 Post 컨트롤러
 	@PostMapping(value="/board/write")
-	public String writeRes() {
+	public String writeRes(MultipartHttpServletRequest request) {
+		
+		String boardCategory = request.getParameter("boardCategory");
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
+		
+		//파라미터 null 여부 체크
+		if(boardCategory == null || title == null || content == null) {
+			return "/board/list";
+		}
+		
+		//파라미터 빈문자 여부 체크
+		if(boardCategory.equals("") || title.equals("") || content.equals("")) {
+			return "/board/list";
+		}
+		
+		
 		return "/board/list";
 	}
 	

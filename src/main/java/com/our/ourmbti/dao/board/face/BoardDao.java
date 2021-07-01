@@ -14,4 +14,7 @@ public interface BoardDao {
 	// 게시판 상세보기 정보를 가져오는 메소드
 	public HashMap<String, Object> selectBoardDetail(int bNo);
 
+	//게시글 조회수를 + 1시키는 메소드
+	public void updateHit(int bNo);
+
 }

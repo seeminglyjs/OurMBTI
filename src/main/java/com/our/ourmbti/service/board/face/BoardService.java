@@ -15,4 +15,7 @@ public interface BoardService {
 	//게시글 상세 정보를 가져오는 메소드
 	public HashMap<String, Object> getBoardInfo(int bNo);
 
+	//게시글 조회수를 상승시키는 메소드
+	public void plusHit(int bNo);
+
 }
