@@ -38,4 +38,10 @@ public interface BoardDao {
 	//게시글 정보를 수정하는 메소드
 	public void updateBoardInfo(HashMap<String, Object> map);
 
+	//게시판 이미지 정보를 제거하는 메소드
+	public void deleteBoardImgInfo(int bNo);
+
+	//게시판 업데이트에 따른 이미지 정보 업데이트 메소드
+	public void updateBoardImgInfo(BoardImg boardImg);
+
 }

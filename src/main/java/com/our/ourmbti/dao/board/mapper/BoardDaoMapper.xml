@@ -52,5 +52,9 @@
 	<update id="updateBoardInfo" parameterType="hashmap">
 		update m_board set b_title = #{title}, b_content = #{content} where b_no = #{bNo}
 	</update>
+	
+	<delete id="deleteBoardImgInfo" parameterType="int">
+		delete m_board_img where b_no = #{bNo}
+	</delete>
 
 </mapper>
