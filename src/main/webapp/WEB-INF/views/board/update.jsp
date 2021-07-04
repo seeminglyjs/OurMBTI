@@ -99,7 +99,7 @@ $(document).ready(function(){
 
 <hr>
 <div id="writeDiv">
-<form action="/board/write" method="post" enctype="multipart/form-data" onsubmit="">
+<form action="/board/update" method="post" enctype="multipart/form-data" onsubmit="">
 
 	<div class="form-group">
 		<select class="form-control input-sm" id="boardCategory" name="boardCategory" style="width: 15%;">
@@ -111,7 +111,15 @@ $(document).ready(function(){
 	
 	<!--게시글 제목  -->
 	<div class="form-group" style="border-bottom: 1px solid #98c1d9;">
-		<input type="text" class="form-control input-lg" id="title" name="title" placeholder="제목을 입력해주세요.">
+	<c:choose>
+		<c:when test="${not empty board }">
+			<input type="text" class="form-control input-lg" id="title" name="title" value="${board.bTitle }">
+		</c:when>
+		<c:otherwise>
+			<input type="text" class="form-control input-lg" id="title" name="title" placeholder="제목을 입력해주세요.">
+		</c:otherwise>
+	</c:choose>
+		
 	<br>
 	</div>
 	
@@ -124,16 +132,23 @@ $(document).ready(function(){
 	
 	<!-- 게시글 내용영역  -->
 	<div style="margin-top: 5px;" id="contentDiv">
-		<textarea class="form-control" id="ir1" name="content" rows="25"></textarea>	
+	<c:choose>
+		<c:when test="${not empty board }">
+			<textarea class="form-control" id="ir1" name="content" rows="25">${board.bContent }</textarea>
+		</c:when>
+		<c:otherwise>
+			<textarea class="form-control" id="ir1" name="content" rows="25"></textarea>
+		</c:otherwise>
+	</c:choose>			
 	</div>
 	
 	
-	
+	<input type="hidden" name = "bNo" value="${board.bNo }">
 	<hr>
 		
 	<!-- 게시글 페이지 이동 영역 -->
 	<div class="form-group text-center">
-	<button type="button" class="btn btn-sm btn-primary" id="btnSave">등록</button>
+	<button type="button" class="btn btn-sm btn-primary" id="btnSave">수정</button>
 	<button type="button" class="btn btn-sm btn-default" onclick="history.back()">뒤로</button>	
 	</div>
 		

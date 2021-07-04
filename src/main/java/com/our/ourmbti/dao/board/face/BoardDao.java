@@ -32,4 +32,10 @@ public interface BoardDao {
 	//게시판 이미지 정보를 가져오는 메소드
 	public List<BoardImg> selectBoardImgInfo(int bNo);
 
+	//업데이트할 게시글 정보를 가져오는 메소드
+	public Board selectUpdateBoardDetail(int bNo);
+
+	//게시글 정보를 수정하는 메소드
+	public void updateBoardInfo(HashMap<String, Object> map);
+
 }

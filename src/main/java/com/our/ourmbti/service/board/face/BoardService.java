@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.our.ourmbti.dto.Board;
 import com.our.ourmbti.dto.BoardImg;
 import com.our.ourmbti.dto.User;
 
@@ -28,5 +29,11 @@ public interface BoardService {
 
 	//게시글 이미지 정보를 가져오는메소드
 	public List<BoardImg> getBoardImgInfo(int bNo);
+
+	//업데이트 게시글 정보를 가져온다.
+	public Board getUpdateBoardInfo(int bNo);
+
+	//게시글을 업데이트 하는 메소드
+	public void updateBoardInfo(MultipartHttpServletRequest request);
 
 }

@@ -96,7 +96,7 @@
 	<!-- 게시글 수정 삭제 버튼 및 쪽지보내기 버튼  -->
 	<div class="text-right" style="border-bottom: 1px solid #98c1d9; padding-bottom: 15px;">	
 	<c:if test="${sessionScope.user.uNo eq boardInfo.U_NO }">
-	<a href="/board/update"><button class="btn btn-sm btn-default">게시글수정</button></a>
+	<a href="/board/update?bNo=${boardInfo.B_NO }"><button class="btn btn-sm btn-default">게시글수정</button></a>
 	<a href="/board/delete"><button class="btn btn-sm btn-warning">게시글삭제</button></a>
 	</c:if>
 	<!-- 쪽지보내기 -->

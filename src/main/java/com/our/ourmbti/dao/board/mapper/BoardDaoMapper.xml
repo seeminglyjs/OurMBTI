@@ -44,5 +44,13 @@
 	<select id="selectBoardImgInfo" parameterType="int" resultType="BoardImg">
 		select * from m_board_img where b_no = #{bNo}
 	</select>
+	
+	<select id="selectUpdateBoardDetail" parameterType="int" resultType="Board">
+		select b_no, b_title, b_content, u_no from m_board where b_no = #{bNo}
+	</select>
+	
+	<update id="updateBoardInfo" parameterType="hashmap">
+		update m_board set b_title = #{title}, b_content = #{content} where b_no = #{bNo}
+	</update>
 
 </mapper>

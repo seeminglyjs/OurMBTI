@@ -217,4 +217,40 @@ public class BoardServiceImpl implements BoardService {
 		
 		return list;
 	}
+	
+	
+	@Override // 업데이트 할 게시글 정보를 가져온다.
+	public Board getUpdateBoardInfo(int bNo) {
+		
+		Board board = boardDao.selectUpdateBoardDetail(bNo);
+		
+		return board;
+	}
+	
+	@Override // 게시글을 업데이트 하는 메소드
+	public void updateBoardInfo(MultipartHttpServletRequest request) {
+		
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
+		
+		String param = request.getParameter("bNo");
+		int bNo = 0;	
+		try {
+			bNo = Integer.parseInt(param);
+		} catch (Exception e) {
+			logger.info("게시글 수정 게시글 번호 형변환 오류 발생");
+		}
+		
+		//맵에 제목과 내용 저장
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("title", title);
+		map.put("content", content);
+		map.put("bNo", bNo);
+		
+		//게시글 정보 업데이트
+		boardDao.updateBoardInfo(map);
+	}
+	
+	
+	
 }
