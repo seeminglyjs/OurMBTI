@@ -13,6 +13,11 @@
 </c:if>
 
 
+<c:if test="${not empty param.searchCategory }">
+	<c:set value="&searchCategory=${param.searchCategory }" var="searchCategory"></c:set>
+</c:if>
+
+
 <div id="pagingDiv" class="text-center">
   <ul class="pagination">
   
@@ -20,7 +25,7 @@
   <c:choose>
   	<c:when test="${paging.curPage ne 1 }">
   	<li>
-  		<a href="/board/list?curPage=1${category}${searchText}">
+  		<a href="/board/list?curPage=1${category}${searchCategory}${searchText}">
   			<span>1 . .</span>
   		</a>
   	</li>
@@ -38,7 +43,7 @@
   	
   	<c:otherwise>
   	<li>
-      <a href="/board/list?curPage=${paging.curPage-1}${category}${searchText}">
+      <a href="/board/list?curPage=${paging.curPage-1}${category}${searchCategory}${searchText}">
         <span>&laquo;</span>
       </a>
     </li>
@@ -51,11 +56,11 @@
   <c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="page">
   	
   	<c:if test="${page eq paging.curPage }">
-  	<li class="active"><a href="/board/list?curPage=${page }${category}${searchText}">${page }</a></li>
+  	<li class="active"><a href="/board/list?curPage=${page }${category}${searchCategory}${searchText}">${page }</a></li>
   	</c:if>
   	
   	<c:if test="${page ne paging.curPage }">
-  	<li><a href="/board/list?curPage=${page }${category}${searchText}">${page }</a></li>
+  	<li><a href="/board/list?curPage=${page }${category}${searchCategory}${searchText}">${page }</a></li>
   	</c:if>
   	
   </c:forEach>  
@@ -72,7 +77,7 @@
   	
   	<c:when test="${paging.curPage ne paging.totalPage }">
   	<li>
-      <a href="/board/list?curPage=${paging.curPage+1}${category}${searchText}" aria-label="Previous">
+      <a href="/board/list?curPage=${paging.curPage+1}${category}${searchCategory}${searchText}" aria-label="Previous">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
@@ -84,7 +89,7 @@
    <c:choose>
   	<c:when test="${paging.curPage ne paging.totalPage }">
   	<li>
-  		<a href="/board/list?curPage=${paging.totalPage}${category}${searchText}">
+  		<a href="/board/list?curPage=${paging.totalPage}${category}${searchCategory}${searchText}">
   			<span>. . ${paging.totalPage}</span>
   		</a>
   	</li>

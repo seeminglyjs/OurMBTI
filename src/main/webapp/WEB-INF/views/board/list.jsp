@@ -2,6 +2,32 @@
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/layout/userHeader.jsp" %>
 
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" ></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+})
+
+
+	/* 카테고리 변경에 따른 페이지 이동 함수  */
+	function chageSelect(){ 
+		
+		var selectList = document.getElementById("category")
+		
+		if(selectList.options[selectList.selectedIndex].value == "F"){
+			location.href = "/board/list?category=F";
+		}
+		if(selectList.options[selectList.selectedIndex].value == "E"){
+			location.href = "/board/list?category=E";
+		}
+		if(selectList.options[selectList.selectedIndex].value == "J"){
+			location.href = "/board/list?category=J";
+		}
+	}
+
+</script>
+
+
 
 
 
@@ -25,7 +51,8 @@
 
 <!--카테고리 Div -->
 <div class="pull-left">
-	<select class="form-group">
+	<select id = "category" onchange="chageSelect()" class="form-control">
+		<option style="background-color:#e0fbfc">카테고리</option>
 		<option value="F">자유게시판</option>
 		<option value="E">경험게시판</option>
 		<option value="J">진로게시판</option>	
@@ -33,32 +60,26 @@
 </div>
 <div class="clear-fix"></div>
 
+
 <!-- 검색 Form Div  -->
 <div class="pull-right">
-<form  class="form-inline" action="/board/list" method="gey">
+<form  class="form-inline" action="/board/list" method="get">
 	<div class="form-group">
-		<select class="">
-			<option value="F">자유게시판</option>
-			<option value="E">경험게시판</option>
-			<option value="J">진로게시판</option>	
+		<select id="searchCategory" name="searchCategory"class="form-control">
+			<option value="title">제목</option>
+			<option value="content">내용</option>	
 		</select>
 	</div>
     <div class="form-group">
     	<input type="text" class="form-control" id="searchText" name="searchText" placeholder="검색내용">
   		<button class="btn btn-sm btn-default">검색</button>
   	</div>
-  
 </form>
 </div>
 <div class="clear-fix"></div>
-
-
-
-
-
-
-
 </div>
+<br><!-- 리스트 와의 공간 부여 하기 위해서  -->
+<div style="margin-top: 25px"></div>
 
 <!--테이블 리스트 DIV  -->
 <div id="listTableDiv">
@@ -73,7 +94,7 @@
 	<c:choose><%--게시글 존재여부 체크 --%>
 	<c:when test="${empty list }">
 		<tr>
-			<td> 게시글이 존재하지 않습니다.</td>
+			<td colspan="5"> 게시글이 존재하지 않습니다.</td>
 		</tr>
 	</c:when>
 	

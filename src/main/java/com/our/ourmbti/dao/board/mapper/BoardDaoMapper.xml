@@ -7,15 +7,53 @@
 <mapper namespace="com.our.ourmbti.dao.board.face.BoardDao">
 
 	<select id="selectBoardListCount" parameterType="hashmap" resultType="int">
-		select count(*) from m_board where b_type like '%' || #{category} || '%'
+		select count(*) from m_board where
+		<choose>
+			<when test='searchText != null and !searchText.equals("")'>	
+				<choose>
+					<when test='searchCategory.equals("title")'>
+						b_title like '%' || #{searchText} || '%'
+					</when>
+				
+					<otherwise>
+						b_content like '%' || #{searchText} || '%'
+					</otherwise>
+				</choose>
+			</when>
+		
+			<otherwise>
+				b_type like '%' || #{category} || '%'
+			</otherwise>
+		</choose>
 	</select>
 
 	<select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
 		select * from
-    		(select rownum rnum, b1.* from
-        		 (select b_no, b.u_no, b_title, b_write_date, b_update_date, b_hit, b_report, b_likes, b_type, u_nick 
-        		 from m_board b, m_user u 
-        		 where b.u_no = u.u_no and b.b_type like '%' || #{category} || '%' order by b_no desc) b1) b2
+		<choose>
+			<when test='searchText != null and !searchText.equals("")'>
+				<choose>
+					<when test='searchCategory.equals("title")'>
+			    		(select rownum rnum, b1.* from
+			        		 (select b_no, b.u_no, b_title, b_write_date, b_update_date, b_hit, b_report, b_likes, b_type, u_nick 
+			        		 from m_board b, m_user u 
+			        		 where b.u_no = u.u_no and b.b_title like '%' || #{searchText} || '%' order by b_no desc) b1) b2
+					</when>
+				
+					<otherwise>
+			    		(select rownum rnum, b1.* from
+			        		 (select b_no, b.u_no, b_title, b_write_date, b_update_date, b_hit, b_report, b_likes, b_type, u_nick 
+			        		 from m_board b, m_user u 
+			        		 where b.u_no = u.u_no and b.b_content like '%' || #{searchText} || '%' order by b_no desc) b1) b2
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+		    		(select rownum rnum, b1.* from
+		        		 (select b_no, b.u_no, b_title, b_write_date, b_update_date, b_hit, b_report, b_likes, b_type, u_nick 
+		        		 from m_board b, m_user u 
+		        		 where b.u_no = u.u_no and b.b_type like '%' || #{category} || '%' order by b_no desc) b1) b2			
+			</otherwise>
+		</choose>
 		where rnum between #{paging.startNo} and #{paging.endNo}
 	</select>
 

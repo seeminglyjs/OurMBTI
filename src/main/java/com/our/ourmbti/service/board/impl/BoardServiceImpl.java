@@ -47,6 +47,9 @@ public class BoardServiceImpl implements BoardService {
 
 		//현재 페이지 1페이지로 default 설정
 		int curPage = 1;
+		
+		//전체 게시글 수
+		int totalCount = 0;
 
 		// 페이징 전달값이 있을때
 		String param = request.getParameter("curPage");
@@ -61,28 +64,53 @@ public class BoardServiceImpl implements BoardService {
 		//현재 페이지 저장
 		map.put("curPage", curPage);
 
-
-		//default 카테고리는 자유 게시판
-		String category = "F";
-
-		//게시판 카테고리를 받을 변수체크 로직
-		String param2 = request.getParameter("category");
-		if(param2 != null) {
-			if(param2.equals("E")) {
-				category = "E";
-			}else if(param2.equals("J")) {
-				category = "J";
+		String searchText = request.getParameter("searchText");
+		
+		// -- 사용자가 검색을 했다면
+		if(searchText != null && !searchText.equals("")) {
+			String searchCategory = request.getParameter("searchCategory");
+			//검색 카테고리가 제목이나 내용이 아닐 경우
+			
+			if(searchCategory == null) {
+				searchCategory = "title";
 			}else {
-				category = "F";
+				if(!searchCategory.equals("title") && !searchCategory.equals("content")) {
+					searchCategory = "title";
+				}
 			}
+			
+			
+			
+			//검색 카테고리와 내용 map에 저장
+			map.put("searchCategory", searchCategory);
+			map.put("searchText", searchText);
+			
+			//검색 내용 기준으로 게시글 리스트를 구한다.
+			totalCount = boardDao.selectBoardListCount(map);
+			
+		}else {// -- 사용자가 검색을 안했다면
+			//default 카테고리는 자유 게시판
+			String category = "F";
+
+			//게시판 카테고리를 받을 변수체크 로직
+			String param2 = request.getParameter("category");
+			if(param2 != null) {
+				if(param2.equals("E")) {
+					category = "E";
+				}else if(param2.equals("J")) {
+					category = "J";
+				}else {
+					category = "F";
+				}
+			}
+
+			//카테고리 저장
+			map.put("category", category);
+			//전체 게시글수를 카운트 한다.
+			totalCount = boardDao.selectBoardListCount(map);
 		}
+		
 
-
-		//카테고리 저장
-		map.put("category", category);
-
-		//전체 게시글수를 카운트 한다.
-		int totalCount = boardDao.selectBoardListCount(map);
 
 		//페이징을 구한다.
 		paging = new BoardPaging(totalCount, curPage);
