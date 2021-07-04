@@ -166,6 +166,17 @@ public class BoardController {
 		
 		return "redirect:/board/list";
 	}
+	
+	
+	//게시글을 삭제하는 컨트롤러
+	@GetMapping(value="/board/delete")
+	private String delete(HttpServletRequest request) {
+		
+		//게시글을 삭제하는 메소드
+		boardService.deleteBoard(request);
+		
+		return "redirect:/board/list";
+	}
 
 
 }

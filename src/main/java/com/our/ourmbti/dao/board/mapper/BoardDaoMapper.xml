@@ -56,5 +56,13 @@
 	<delete id="deleteBoardImgInfo" parameterType="int">
 		delete m_board_img where b_no = #{bNo}
 	</delete>
+	
+	<select id="selectBoardImgCount" parameterType="int" resultType="int">
+		select count(*) from m_board_img where b_no = #{bNO}
+	</select>
+	
+	<delete id="deleteBoardInfo" parameterType="int">
+		delete m_board where b_no = #{bNo}
+	</delete>
 
 </mapper>

@@ -97,7 +97,7 @@
 	<div class="text-right" style="border-bottom: 1px solid #98c1d9; padding-bottom: 15px;">	
 	<c:if test="${sessionScope.user.uNo eq boardInfo.U_NO }">
 	<a href="/board/update?bNo=${boardInfo.B_NO }"><button class="btn btn-sm btn-default">게시글수정</button></a>
-	<a href="/board/delete"><button class="btn btn-sm btn-warning">게시글삭제</button></a>
+	<a href="/board/delete?bNo=${boardInfo.B_NO }"><button class="btn btn-sm btn-warning">게시글삭제</button></a>
 	</c:if>
 	<!-- 쪽지보내기 -->
 	<c:if test="${sessionScope.user.uNo ne boardInfo.U_NO }">

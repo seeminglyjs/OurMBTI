@@ -258,13 +258,13 @@ public class BoardServiceImpl implements BoardService {
 		if(fileList == null || fileList.isEmpty()) {
 			return;
 		}else {
-			
+
 			//기존에 저장되어 있는 이미지 정보를 가져온다.
 			List<BoardImg> listImg = boardDao.selectBoardImgInfo(bNo);
-			
+
 			//파일 경로 지정
 			String path = context.getRealPath("upload");
-			
+
 			//db와 일치하는 파일을 서버에서 제거한다.
 			for(int i = 0; i < listImg.size(); i++) {
 				//현재 게시판에 존재하는 파일객체를 만듬
@@ -273,11 +273,11 @@ public class BoardServiceImpl implements BoardService {
 					file.delete(); // 파일 삭제	
 				}
 			}
-			
+
 			//DB에서도 파일 정보를 지운다.
 			boardDao.deleteBoardImgInfo(bNo);
 
-			
+
 			//*****새로운 파일 저장 코드
 
 			//첨부된 파일 숫자만큼 반복한다.
@@ -337,12 +337,56 @@ public class BoardServiceImpl implements BoardService {
 				//파일 이미지 정보 저장
 				boardDao.insertBoardImgInfo(boardImg);
 			}
-
 		}
-
-
 	}
 
+	//게시글을 삭제하는 메소드
+	@Override
+	@Transactional
+	public void deleteBoard(HttpServletRequest request) {
 
+		String param = request.getParameter("bNo");
+		int bNo = 0;
+
+		//전달받은 파라미터(게시글번호) 형변환 체크
+		try {
+			bNo = Integer.parseInt(param);
+		} catch (Exception e) {
+			logger.info("게시글 삭제 게시판 번호 형변환 오류 발생");
+		}
+
+		//게시글에 이미지 정보가 있는지 체크
+		int count = 0;
+		try {
+			count= boardDao.selectBoardImgCount(bNo);
+		} catch (Exception e) {
+			count = 0;
+		}
+
+		//만약에 이미지 정보가 존재하면
+		if(count > 0 ) {
+			//기존에 저장되어 있는 이미지 정보를 가져온다.
+			List<BoardImg> listImg = boardDao.selectBoardImgInfo(bNo);
+
+			//파일 경로 지정
+			String path = context.getRealPath("upload");
+
+			//db와 일치하는 파일을 서버에서 제거한다.
+			for(int i = 0; i < listImg.size(); i++) {
+				//현재 게시판에 존재하는 파일객체를 만듬
+				File file = new File(path + "\\" + listImg.get(i).getBiStoredFilename());						
+				if(file.exists()) { // 파일이 존재하면
+					file.delete(); // 파일 삭제	
+				}
+			}
+
+			//DB에서도 파일 정보를 지운다.
+			boardDao.deleteBoardImgInfo(bNo);
+		}	
+
+		//최종적으로 게시판 정보를 지운다.
+		boardDao.deleteBoardInfo(bNo);
+	}
 
 }
+

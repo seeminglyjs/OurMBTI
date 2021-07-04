@@ -36,4 +36,7 @@ public interface BoardService {
 	//게시글을 업데이트 하는 메소드
 	public void updateBoardInfo(MultipartHttpServletRequest request);
 
+	//게시글을 삭제하는 메소드
+	public void deleteBoard(HttpServletRequest request);
+
 }

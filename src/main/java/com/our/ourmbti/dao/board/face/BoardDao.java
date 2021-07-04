@@ -44,4 +44,10 @@ public interface BoardDao {
 	//게시판 업데이트에 따른 이미지 정보 업데이트 메소드
 	public void updateBoardImgInfo(BoardImg boardImg);
 
+	//게시판에 이미지 존재 여부 체크
+	public int selectBoardImgCount(int bNo);
+
+	//게시판을 지운다.
+	public void deleteBoardInfo(int bNo);
+
 }
