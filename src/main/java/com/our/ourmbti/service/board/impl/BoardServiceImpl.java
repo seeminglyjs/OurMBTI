@@ -284,7 +284,7 @@ public class BoardServiceImpl implements BoardService {
 		List<MultipartFile> fileList = request.getFiles("uploadFiles");
 
 		//파일이 없기 때문에 게시글 등록 완료
-		if(fileList == null || fileList.isEmpty()) {
+		if(fileList == null || fileList.isEmpty() || fileList.get(0).getSize() == 0) {
 			return;
 		}else {
 
