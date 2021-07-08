@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class BoardServiceImpl implements BoardService {
 
 		//현재 페이지 1페이지로 default 설정
 		int curPage = 1;
-		
+
 		//전체 게시글 수
 		int totalCount = 0;
 
@@ -65,12 +66,12 @@ public class BoardServiceImpl implements BoardService {
 		map.put("curPage", curPage);
 
 		String searchText = request.getParameter("searchText");
-		
+
 		// -- 사용자가 검색을 했다면
 		if(searchText != null && !searchText.equals("")) {
 			String searchCategory = request.getParameter("searchCategory");
 			//검색 카테고리가 제목이나 내용이 아닐 경우
-			
+
 			if(searchCategory == null) {
 				searchCategory = "title";
 			}else {
@@ -78,16 +79,16 @@ public class BoardServiceImpl implements BoardService {
 					searchCategory = "title";
 				}
 			}
-			
-			
-			
+
+
+
 			//검색 카테고리와 내용 map에 저장
 			map.put("searchCategory", searchCategory);
 			map.put("searchText", searchText);
-			
+
 			//검색 내용 기준으로 게시글 리스트를 구한다.
 			totalCount = boardDao.selectBoardListCount(map);
-			
+
 		}else {// -- 사용자가 검색을 안했다면
 			//default 카테고리는 자유 게시판
 			String category = "F";
@@ -109,7 +110,7 @@ public class BoardServiceImpl implements BoardService {
 			//전체 게시글수를 카운트 한다.
 			totalCount = boardDao.selectBoardListCount(map);
 		}
-		
+
 
 
 		//페이징을 구한다.
@@ -414,6 +415,109 @@ public class BoardServiceImpl implements BoardService {
 
 		//최종적으로 게시판 정보를 지운다.
 		boardDao.deleteBoardInfo(bNo);
+	}
+
+	@Override // 게시글 좋아요 여부를 체크하는 메소드
+	@Transactional
+	public int boardLikeCheck(HttpServletRequest request) {
+
+		Integer check = 0;
+
+		String param1 = request.getParameter("uNo");
+		String param2 = request.getParameter("bNo");
+		String param3 = request.getParameter("unlike");
+
+		int uNo = 0;
+		int bNo = 0;
+
+		//파라미터값 형변환 체크
+		try {
+			uNo = Integer.parseInt(param1);
+			bNo = Integer.parseInt(param2);
+		} catch (Exception e) {
+			logger.info("** 게시판 좋아요 체크 중 형변환 오류 발생");
+			return 0;
+		}
+
+		//게시판 좋아요 취소를 눌렀음
+		if(param3 != null && param3.equals("on")) {
+			//형변환 오류가 발생하지 않으면 해당 파라미터를 맵에 담아준다.
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("uNo", uNo);
+			map.put("bNo", bNo);
+
+			//해당 유저가 현재 게시판에 좋아요를 눌렀는지 체크
+			check = boardDao.selectBoardLikesCountCheck(map);
+
+			// 현재 로그인 유저는 해당 게시글에 좋아요를 눌렀다.
+			if(check != null && check == 1) {
+				//때문에 해당 유저가 좋아요 누른 정보를 제거한다.
+				boardDao.deleteBoardLikeInfo(map);
+			}
+
+			//게시판 자체의 좋아요 수를 하나 줄인다.
+			boardDao.updateBoardLikesMinus(map);
+
+			//파라미터 체크를 위해 다시 확인한 후 넘긴다.
+			check = boardDao.selectBoardLikesCountCheck(map);
+		}else { // 게시판 좋아요를 눌렀음
+			
+			//형변환 오류가 발생하지 않으면 해당 파라미터를 맵에 담아준다.
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("uNo", uNo);
+			map.put("bNo", bNo);
+
+			//해당 유저가 현재 게시판에 좋아요를 눌렀는지 체크
+			check = boardDao.selectBoardLikesCountCheck(map);
+
+			// 현재 로그인 유저는 해당 게시글에 좋아요를 누르지 않음
+			if(check != null && check == 0) {
+				//때문에 해당 유저가 좋아요를 눌렀다고 체크함
+				boardDao.insertBoardLikeInfo(map);
+			}
+
+			//게시판 자체의 좋아요 수도 늘린다.
+			boardDao.updateBoardLikes(map);
+
+			//파라미터 체크를 위해 다시 확인한 후 넘긴다.
+			check = boardDao.selectBoardLikesCountCheck(map);
+		}
+
+		return check;
+	}
+
+
+	@Override // 게시글 상세보기 최초 접속시 해당 유저가 게시글 좋아요 눌렀는지 체크
+	public Integer boardDetailLikeCheck(int bNo, HttpSession session) {
+
+		User user = (User) session.getAttribute("user");
+
+		int uNo = 0;
+
+		//파라미터값 체크
+		try {
+			if(user == null) {
+				return 0;
+			}else {
+				uNo = user.getuNo();
+			}
+		} catch (Exception e) {
+			logger.info("** 게시판 상세보기 좋아요 체크 중 형변환 오류 발생");
+			return 0;
+		}
+
+		//형변환 오류가 발생하지 않으면 해당 파라미터를 맵에 담아준다.
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("uNo", uNo);
+		map.put("bNo", bNo);
+
+		Integer check = 0;
+
+		//해당 유저가 현재 게시판에 좋아요를 눌렀는지 체크
+		check = boardDao.selectBoardLikesCountCheck(map);
+
+
+		return check;
 	}
 
 }

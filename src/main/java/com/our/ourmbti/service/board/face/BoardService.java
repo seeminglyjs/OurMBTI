@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -38,5 +39,12 @@ public interface BoardService {
 
 	//게시글을 삭제하는 메소드
 	public void deleteBoard(HttpServletRequest request);
+
+	//게시글을 좋아요 여부를 체크하는 메소드
+	public int boardLikeCheck(HttpServletRequest request);
+
+	//게시글 상세보기시 해당 유저가 게시글 좋아요 눌렀는지 체크
+	public Integer boardDetailLikeCheck(int bNo, HttpSession session);
+
 
 }

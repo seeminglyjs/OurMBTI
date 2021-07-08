@@ -24,6 +24,7 @@
 		<typeAlias type="com.our.ourmbti.dto.User" alias="User"/>
 		<typeAlias type="com.our.ourmbti.dto.Board" alias="Board"/>
 		<typeAlias type="com.our.ourmbti.dto.BoardImg" alias="BoardImg"/>
+		<typeAlias type="com.our.ourmbti.dto.BoardLikes" alias="BoardLikes"/>
 	</typeAliases>
 	
 </configuration>

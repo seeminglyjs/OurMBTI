@@ -2,6 +2,50 @@
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/layout/userHeader.jsp" %>
 
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	//좋아요 버튼 클릭시
+	$(document).on("click", "#likeSpan", function(){
+		$.ajax({
+			type: "post"
+			,url: "/board/boardLike"
+			,data:{ uNo : $("#likeuNo").val()
+				,bNo : $("#likebNo").val()}
+			,dataType: "html"
+			,success:function(res){
+				$("#likeDiv").html(res)
+			}
+			,error:function(){
+				console.log("게시판 좋아요 실패")
+			}
+		})
+	})
+	
+	
+	//안좋아요 버튼 클릭시
+	$(document).on("click", "#unlikeSpan", function(){
+		$.ajax({
+			type: "post"
+			,url: "/board/boardUnlike"
+			,data:{ uNo : $("#unlikeuNo").val()
+				,bNo : $("#unlikebNo").val()
+				,unlike : "on"}
+			,dataType: "html"
+			,success:function(res){
+				$("#likeDiv").html(res)
+			}
+			,error:function(){
+				console.log("게시판 안좋아요 실패")
+			}
+		})
+	})
+
+
+})
+</script>
+
+
 <style type="text/css">
 
 /* 게시글 상세보기 전체 DIV 설정 */
@@ -21,6 +65,34 @@
 #contentDiv{
 	padding: 15px;
 	min-height: 350px;
+}
+
+
+/* 게시글 좋아요 버튼  */
+#likeSpan{
+	cursor: pointer;
+	color: #ee6c4d;
+	font-size: 25px;
+	line-height: 40px;
+}
+
+/* 좋아요 버튼 호버시 */
+#likeSpan:hover{
+	font-size: 30px;
+}
+
+
+/* 게시글 안좋아요 버튼  */
+#unlikeSpan{
+	cursor: pointer;
+	color: #293241;
+	font-size: 25px;
+	line-height: 40px;
+}
+
+/* 안좋아요 버튼 호버시 */
+#unlikeSpan:hover{
+	font-size: 30px;
 }
 
 </style>
@@ -93,6 +165,44 @@
 	${boardInfo.B_CONTENT }	
 	</div>
 	
+<!--게시글 좋아요 영역 -->
+	<div id="likeDiv">
+	
+	<c:choose>
+
+		<c:when test="${likeCheck }">
+			<!--안좋아요 버튼 -->
+			<div class="text-center">
+			<span id="unlikeSpan" class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+			<input type="hidden" name="uNo" id="unlikeuNo" value="${sessionScope.user.uNo }">
+			<input type="hidden" name="bNo" id="unlikebNo" value="${boardInfo.B_NO }">
+			</div>
+			
+			<!-- 안좋아요 숫자  -->
+			<div class="text-center">
+			<p>좋아요 ${boardInfo.B_LIKES } 개</p>
+			</div>	
+		</c:when>
+	
+		<c:otherwise>
+			<!--좋아요 버튼 -->
+			<div class="text-center">
+			<span id="likeSpan" class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+			<input type="hidden" name="uNo" id="likeuNo" value="${sessionScope.user.uNo }">
+			<input type="hidden" name="bNo" id="likebNo" value="${boardInfo.B_NO }">
+			</div>
+			
+			<!-- 좋아요 숫자  -->
+			<div class="text-center">
+			<p>좋아요 ${boardInfo.B_LIKES } 개</p>
+			</div>
+		</c:otherwise>
+		
+	</c:choose>
+
+	</div>
+<!------------------------ -->
+	
 	<!-- 게시글 수정 삭제 버튼 및 쪽지보내기 버튼  -->
 	<div class="text-right" style="border-bottom: 1px solid #98c1d9; padding-bottom: 15px;">	
 	<c:if test="${sessionScope.user.uNo eq boardInfo.U_NO }">
@@ -104,7 +214,6 @@
 	<a href="#"><button class="btn btn-sm btn-info"><span class="glyphicon glyphicon-envelope" aria-hidden="true">&nbsp;쪽지</span></button></a>
 	</c:if>	
 	</div>
-	
 	
 	<!--댓글 쓰기 영역  -->
 	<div style="margin-top: 20px;" class="text-center">

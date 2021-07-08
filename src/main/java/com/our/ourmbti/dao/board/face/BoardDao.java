@@ -50,4 +50,19 @@ public interface BoardDao {
 	//게시판을 지운다.
 	public void deleteBoardInfo(int bNo);
 
+	//게시판에 해당 유저가 좋아요를 눌렀는지 체크한다.
+	public Integer selectBoardLikesCountCheck(HashMap<String, Object> map);
+
+	//유저가 좋아요를 눌렀다고 체크한다.
+	public void insertBoardLikeInfo(HashMap<String, Object> map);
+
+	//게시판 좋아요수를 하나 더해준다.
+	public void updateBoardLikes(HashMap<String, Object> map);
+
+	//해당 게시판 좋아요 눌렀다는 유저정보를 제거한다. 
+	public void deleteBoardLikeInfo(HashMap<String, Object> map);
+
+	//게시판 좋아요수를 하나 차감해준다.
+	public void updateBoardLikesMinus(HashMap<String, Object> map);
+
 }

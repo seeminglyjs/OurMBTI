@@ -53,7 +53,7 @@ public class BoardController {
 
 	//게시판 상세보기 컨트롤러
 	@GetMapping(value = "/board/detail")
-	public String detail(@RequestParam(defaultValue = "") String boardNo, Model model) {
+	public String detail(@RequestParam(defaultValue = "") String boardNo, Model model, HttpSession session) {
 
 		int bNo = 0;
 
@@ -83,6 +83,20 @@ public class BoardController {
 		}
 
 
+		//게시판 좋아요 여부를 담을 변수
+		Integer check = 0;
+		
+		//해당 유저가 게시판을 좋아요 했는지 체크
+		check = boardService.boardDetailLikeCheck(bNo, session);
+		
+		if(check != null && check == 1) {
+			//현재 로그인 유저는 체크를 눌렀다.
+			model.addAttribute("likeCheck", true);
+		}else {
+			//현재 로그인 유저는 체크를 누르지 않았다.
+			model.addAttribute("likeCheck", false);
+		}
+			
 		//게시글 정보 전달
 		model.addAttribute("boardInfo", map);
 
@@ -170,7 +184,7 @@ public class BoardController {
 	
 	//게시글을 삭제하는 컨트롤러
 	@GetMapping(value="/board/delete")
-	private String delete(HttpServletRequest request) {
+	public String delete(HttpServletRequest request) {
 		
 		//게시글을 삭제하는 메소드
 		boardService.deleteBoard(request);
@@ -178,5 +192,77 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
+	//게시판 좋아요 여부 체크하는 메소드
+	@PostMapping(value = "/board/boardLike")
+	public void boardLike(HttpServletRequest request, Model model) {
+		
+		//게시판 좋아요 여부를 담을 변수
+		Integer check = 0;
+		
+		//해당 유저가 게시판을 좋아요 했는지 체크
+		check = boardService.boardLikeCheck(request);
+		
+		if(check != null && check == 1) {
+			//현재 로그인 유저는 체크를 눌렀다.
+			model.addAttribute("likeCheck", true);
+		}else {
+			//현재 로그인 유저는 체크를 누르지 않았다.
+			model.addAttribute("likeCheck", false);
+		}	
+		
+		String param1 = request.getParameter("bNo");
+		
+		Integer bNo = 0;
+		
+		//게시판 정보를 다시 가져오기 위해 파라미터 체크
+		try {
+			bNo = Integer.parseInt(param1);
+		} catch (Exception e) {
+			logger.info("** 게시판 좋아요 후 게시판 정보 불러오기 중 형변환 오류 발생");
+		}
+		
+		//유저와 게시글정보의 조인 결과를 가져오는 메소드
+		HashMap <String, Object> map = boardService.getBoardInfo(bNo);
+		
+		//게시글 정보 전달
+		model.addAttribute("boardInfo", map);
+	}
+	
+	//게시판 안좋아요 여부 체크하는 메소드
+	@PostMapping(value = "/board/boardUnlike")
+	public void boardUnlike(HttpServletRequest request, Model model) {
+		
+		//게시판 좋아요 여부를 담을 변수
+		Integer check = 0;
+		
+		//해당 유저가 게시판을 좋아요 했는지 체크
+		check = boardService.boardLikeCheck(request);
+		
+		if(check != null && check == 1) {
+			//현재 로그인 유저는 체크를 눌렀다.
+			model.addAttribute("likeCheck", true);
+		}else {
+			//현재 로그인 유저는 체크를 누르지 않았다.
+			model.addAttribute("likeCheck", false);
+		}	
+		
+		String param1 = request.getParameter("bNo");
+		
+		Integer bNo = 0;
+		
+		//게시판 정보를 다시 가져오기 위해 파라미터 체크
+		try {
+			bNo = Integer.parseInt(param1);
+		} catch (Exception e) {
+			logger.info("** 게시판 좋아요 후 게시판 정보 불러오기 중 형변환 오류 발생");
+		}
+		
+		//유저와 게시글정보의 조인 결과를 가져오는 메소드
+		HashMap <String, Object> map = boardService.getBoardInfo(bNo);
+		
+		//게시글 정보 전달
+		model.addAttribute("boardInfo", map);
+	}
+	
 
 }

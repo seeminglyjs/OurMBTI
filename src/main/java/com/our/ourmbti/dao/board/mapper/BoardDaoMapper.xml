@@ -102,5 +102,25 @@
 	<delete id="deleteBoardInfo" parameterType="int">
 		delete m_board where b_no = #{bNo}
 	</delete>
+	
+	<select id="selectBoardLikesCountCheck" parameterType="hashmap" resultType="int">
+		select count(*) from m_user_board_likes where b_no = #{bNo} and u_no = #{uNo}
+	</select>
+	
+	<insert id="insertBoardLikeInfo" parameterType="hashmap">
+		insert into m_user_board_likes(blike_no, b_no, u_no) values(m_user_board_likes_seq.nextval, #{bNo}, #{uNo})
+	</insert>
+	
+	<update id="updateBoardLikes" parameterType="hashmap">
+		update m_board set b_likes = b_likes + 1 where b_no = #{bNo}
+	</update>
+	
+	<delete id="deleteBoardLikeInfo" parameterType="hashmap">
+		delete m_user_board_likes where b_no = #{bNo} and u_no = #{uNo}
+	</delete>
+	
+	<update id="updateBoardLikesMinus" parameterType="hashmap">
+		update m_board set b_likes = b_likes - 1 where b_no = #{bNo}
+	</update>
 
 </mapper>
