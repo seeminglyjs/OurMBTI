@@ -241,9 +241,8 @@ $(document).ready(function(){
 		  </div>
 	</div>
 	
-<!--댓글 리스트 영역  -->
 	<div id="commentDiv" style="padding: 15px;">
-	
+<!--댓글 리스트 영역  -->
 	<c:choose>
 		
 		<c:when test="${not empty commentListSize }">
@@ -269,14 +268,12 @@ $(document).ready(function(){
 	
 	
 		<c:otherwise>
-			<div>등록된 댓글이 없습니다.</div>
+			<div class="text-center">등록된 댓글이 없습니다.</div>
 		</c:otherwise>
 	
 	</c:choose>
-	
-	</div>
 <!--------------------------------  -->
-
+	</div>
 </div>
 
 <%@include file="/WEB-INF/views/layout/userFooter.jsp" %>

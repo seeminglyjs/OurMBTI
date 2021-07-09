@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!--댓글 리스트 영역  -->
-	
 	<c:choose>
 		
 		<c:when test="${not empty commentListSize }">
@@ -29,7 +28,7 @@
 	
 	
 		<c:otherwise>
-			<div>등록된 댓글이 없습니다.</div>
+			<div class="text-center">등록된 댓글이 없습니다.</div>
 		</c:otherwise>
 	
 	</c:choose>
