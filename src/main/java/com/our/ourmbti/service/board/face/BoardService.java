@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.our.ourmbti.dto.Board;
 import com.our.ourmbti.dto.BoardImg;
+import com.our.ourmbti.dto.Comment;
 import com.our.ourmbti.dto.User;
 
 public interface BoardService {
@@ -45,6 +46,21 @@ public interface BoardService {
 
 	//게시글 상세보기시 해당 유저가 게시글 좋아요 눌렀는지 체크
 	public Integer boardDetailLikeCheck(int bNo, HttpSession session);
+
+	//게시글의 댓글을 작성하는 메소드
+	public void writeComment(HttpServletRequest request);
+
+	//댓글 리스트를 가져오는 메소드
+	public List<HashMap<String,Object>> getCommentList(HttpServletRequest request);
+
+	//댓글 리스트의 총길이를 가져오는 메소드
+	public int getCommentCount(HttpServletRequest request);
+
+	//게시판 상세보기시 댓글 리스트를 가져오는 메소드
+	public List<HashMap<String, Object>> getFirstCommentList(int bNo);
+
+	//게시판 상세보기시 댓글 리스트의 총길이를 가져오는 메소드
+	public int getFirstCommentCount(int bNo);
 
 
 }

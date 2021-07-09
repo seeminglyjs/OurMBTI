@@ -122,5 +122,22 @@
 	<update id="updateBoardLikesMinus" parameterType="hashmap">
 		update m_board set b_likes = b_likes - 1 where b_no = #{bNo}
 	</update>
+	
+	<insert id="insertComment" parameterType="hashmap">
+		insert into m_comment(c_no, b_no, u_no, c_content) values(m_comment_seq.nextval, #{bNo}, #{uNo}, #{comment})
+	</insert>
 
+	<select id="selectAllList" parameterType="hashmap" resultType="hashmap">
+		select * from
+		    (select rownum rnum, c1.* from
+		        (select c.c_no, c.b_no, c.u_no, c_content, c_report, c_likes, c_write_date, u.u_nick from m_comment c, m_user u where 
+		        c.u_no = u.u_no and
+		        b_no = #{bNo} order by c_no desc) c1) c2 
+		where rnum between 1 and 10
+	</select>
+	
+	<select id="selectCommentTotalCount" parameterType="int" resultType="int">
+		select count(*) from m_comment where b_no = #{bNo}
+	</select>
+	
 </mapper>

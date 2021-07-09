@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.our.ourmbti.dto.Board;
 import com.our.ourmbti.dto.BoardImg;
+import com.our.ourmbti.dto.Comment;
 import com.our.ourmbti.dto.User;
 import com.our.ourmbti.service.board.face.BoardService;
 
@@ -105,6 +106,19 @@ public class BoardController {
 			model.addAttribute("fileNameList", fileNameList);
 		}
 
+		//댓글리스트를 가져오는 메소드
+		List<HashMap<String,Object>> commentList = boardService.getFirstCommentList(bNo);
+		
+		//댓글의 총 길이를 가져오는 메소드
+		int totalCommentCount = boardService.getFirstCommentCount(bNo);
+		
+		//댓글관련 정보 다시 전달
+		model.addAttribute("commentList", commentList);
+		if(commentList != null && !commentList.isEmpty()) {
+			model.addAttribute("commentListSize", commentList.size());
+		}
+		model.addAttribute("totalCommentCount", totalCommentCount);
+			
 		return "/board/detail";
 
 	}
@@ -264,5 +278,25 @@ public class BoardController {
 		model.addAttribute("boardInfo", map);
 	}
 	
+	//댓글달기 컨트롤러
+	@PostMapping(value = "/board/comment/writeComment")
+	public void writeComment(HttpServletRequest request, Model model) {
+		
+		//댓글을 작성하는 메소드
+		boardService.writeComment(request);
+		
+		//댓글리스트를 가져오는 메소드
+		List<HashMap<String,Object>> commentList = boardService.getCommentList(request);
+		
+		//댓글의 총 길이를 가져오는 메소드
+		int totalCommentCount = boardService.getCommentCount(request);
+		
+		//댓글관련 정보 다시 전달
+		model.addAttribute("commentList", commentList);
+		if(commentList != null && !commentList.isEmpty()) {
+			model.addAttribute("commentListSize", commentList.size());
+		}
+		model.addAttribute("totalCommentCount", totalCommentCount);
+	}
 
 }

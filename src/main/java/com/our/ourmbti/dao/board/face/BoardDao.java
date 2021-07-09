@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.our.ourmbti.dto.Board;
 import com.our.ourmbti.dto.BoardImg;
+import com.our.ourmbti.dto.Comment;
 
 public interface BoardDao {
 
@@ -64,5 +65,14 @@ public interface BoardDao {
 
 	//게시판 좋아요수를 하나 차감해준다.
 	public void updateBoardLikesMinus(HashMap<String, Object> map);
+
+	//게시판에 댓글을 작성해주는 메소드
+	public void insertComment(HashMap<String, Object> map);
+
+	//댓글리스트를 가져오는 메소드
+	public List<HashMap<String,Object>> selectAllList(HashMap<String, Object> map);
+
+	//해당 게시글의 전체 댓글 수를 가져오는 메소드
+	public int selectCommentTotalCount(int bNo);
 
 }

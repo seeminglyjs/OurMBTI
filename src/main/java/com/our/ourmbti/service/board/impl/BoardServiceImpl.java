@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.our.ourmbti.dao.board.face.BoardDao;
 import com.our.ourmbti.dto.Board;
 import com.our.ourmbti.dto.BoardImg;
+import com.our.ourmbti.dto.Comment;
 import com.our.ourmbti.dto.User;
 import com.our.ourmbti.service.board.face.BoardService;
 import com.our.ourmbti.util.BoardPaging;
@@ -461,7 +462,7 @@ public class BoardServiceImpl implements BoardService {
 			//파라미터 체크를 위해 다시 확인한 후 넘긴다.
 			check = boardDao.selectBoardLikesCountCheck(map);
 		}else { // 게시판 좋아요를 눌렀음
-			
+
 			//형변환 오류가 발생하지 않으면 해당 파라미터를 맵에 담아준다.
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("uNo", uNo);
@@ -520,5 +521,108 @@ public class BoardServiceImpl implements BoardService {
 		return check;
 	}
 
+	@Override //댓글을 작성하는 메소드
+	public void writeComment(HttpServletRequest request) {
+
+		String param1 = request.getParameter("uNo");
+		String param2 = request.getParameter("bNo");
+		String param3 = request.getParameter("comment");
+
+		int uNo = 0;
+		int bNo = 0;
+		String comment = ""; 
+
+		//파라미터를 전달할 변수에 담는다.
+		try {
+			uNo = Integer.parseInt(param1);
+			bNo = Integer.parseInt(param2);
+			comment = param3;
+		} catch (Exception e) {
+			logger.info("** 게시판 댓글 작성 중 파라미터 변환중 오류 발생");
+			return;
+		}
+
+		//map에 각 변수를 담아준다.
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("uNo", uNo);
+		map.put("bNo", bNo);
+		map.put("comment", comment);
+
+		//게시글에 댓글을 삽입한다.
+		boardDao.insertComment(map);
+	}
+
+
+	@Override //댓글 리스트를 가져오는 메소드
+	public List<HashMap<String,Object>> getCommentList(HttpServletRequest request) {
+
+		String param1 = request.getParameter("bNo");
+
+		int bNo = 0;
+
+		try { //파라미터 형변환 오류 체크
+			bNo = Integer.parseInt(param1);
+		} catch (Exception e) {
+			logger.info("** 게시글 댓글리스트를 파라미터 변환중 오류 발생");
+			return null;
+		}
+
+		//map에 각 변수를 담아준다.
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("bNo", bNo);
+
+		//댓글리스트를 가져오는 메소드
+		List<HashMap<String,Object>> list = boardDao.selectAllList(map);
+
+		return list;
+	}
+
+	@Override // 댓글의 총리스트를 가져오는 메소드
+	public int getCommentCount(HttpServletRequest request) {
+
+
+		String param1 = request.getParameter("bNo");
+
+		int bNo = 0;
+
+		try { //파라미터 형변환 오류 체크
+			bNo = Integer.parseInt(param1);
+		} catch (Exception e) {
+			logger.info("** 게시글 댓글리스트를 파라미터 변환중 오류 발생");
+			return 0;
+		}
+		int total = 0;
+
+		//해당 게시글의 전체 댓글수를 가져온다.
+		total = boardDao.selectCommentTotalCount(bNo);
+
+		return total;
+	}
+
+
+	@Override// 게시판 상세보기시 댓글의 총리스트를 가져오는 메소드
+	public List<HashMap<String, Object>> getFirstCommentList(int bNo) {
+		//map에 각 변수를 담아준다.
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("bNo", bNo);
+
+		//댓글리스트를 가져오는 메소드
+		List<HashMap<String,Object>> list = boardDao.selectAllList(map);
+
+		return list;
+	}
+
+	
+	@Override // 게시판 상세보기시 댓글의 총리스트 갯수를 가져오는 메소드
+	public int getFirstCommentCount(int bNo) {
+		int total = 0;
+
+		//해당 게시글의 전체 댓글수를 가져온다.
+		total = boardDao.selectCommentTotalCount(bNo);
+
+		return total;
+	}
 }
+
+
 
