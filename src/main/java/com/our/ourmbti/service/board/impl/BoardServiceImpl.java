@@ -559,12 +559,25 @@ public class BoardServiceImpl implements BoardService {
 	
 		String param1 = request.getParameter("bNo");
 		String param2 = request.getParameter("delCheck"); // 댓글 삭제버튼이 눌렸는지
+		String param3 = request.getParameter("moreCheck"); // 댓글 더보기버튼이 눌렸는지
+		String param4 = request.getParameter("foldCheck"); // 댓글 접기버튼이 눌렸는지
 			
-		if(param2 != null && !param2.equals("")) {// 댓글 삭제가 눌렸다면
-			//현재 리스트 길이 유지를 위해 리스트 길이 저장
-			commentListSize = Integer.parseInt(request.getParameter("commentListSize"));
+		try {
+			if(param2 != null && !param2.equals("")) {// 댓글 삭제가 눌렸다면
+				//현재 리스트 길이 유지를 위해 리스트 길이 저장
+				commentListSize = Integer.parseInt(request.getParameter("commentListSize"));
+			}else if(param3 != null && !param3.equals("")) { // 댓글 더보기가 눌렸다면
+				//현재 댓글 리스트에서 += 10을 해준다.
+				commentListSize = Integer.parseInt(request.getParameter("commentListSize"));
+				commentListSize += 10;
+			}else if(param4 != null && !param4.equals("")) { // 접기 버튼이 눌렷다면
+				commentListSize = 10; // 최초 댓글 리스트 길이 10 까지
+			}
+		} catch (Exception e) {
+			logger.info("** 댓글 리스트 전체 길이 파라미터 문제 발생 10으로 고정");
+			commentListSize = 10; // 최초 댓글 리스트 길이 10 까지
 		}
-
+		
 		int bNo = 0;
 
 		try { //파라미터 형변환 오류 체크

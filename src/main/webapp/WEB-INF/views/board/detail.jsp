@@ -59,7 +59,49 @@ $(document).ready(function(){
 				console.log("게시판 댓글달기 실패")
 			}
 		})
-	})	
+	})
+	
+ 	//댓글 더보기 ajax
+	$(document).on("click", "#moreComment", function(){
+		$.ajax({
+			type: "post"
+			,url: "/board/comment/moreComment"
+			,data:{ uNo : ${sessionScope.user.uNo}
+				,commentListSize : $("#commentListSize").val()
+				,bNo : ${boardInfo.B_NO }
+				,moreCheck : "1"
+			}
+			,dataType: "html"
+			,success:function(res){
+				$("#commentDiv").html(res)
+			}
+			,error:function(){
+				console.log("게시판 더보기 실패")
+			}
+		})
+	})
+	
+ 	//댓글 더보기 ajax
+	$(document).on("click", "#foldComment", function(){
+		$.ajax({
+			type: "post"
+			,url: "/board/comment/foldComment"
+			,data:{ uNo : ${sessionScope.user.uNo}
+				,commentListSize : $("#commentListSize").val()
+				,bNo : ${boardInfo.B_NO }
+				,foldCheck : "1"
+			}
+			,dataType: "html"
+			,success:function(res){
+				$("#commentDiv").html(res)
+			}
+			,error:function(){
+				console.log("게시판 접기 실패")
+			}
+		})
+	})
+	
+	
 })
 
 //댓글 삭제시 호출 함수
@@ -301,8 +343,25 @@ function deleteCno(param){
 	
 		<c:otherwise>
 			<div class="text-center">등록된 댓글이 없습니다.</div>
-		</c:otherwise>
+		</c:otherwise>	
+	</c:choose>
 	
+	<!-- 댓글 더보기 접기 체크 구문 -->
+	<c:choose>
+		
+		<c:when test="${commentListSize < totalCommentCount}">
+		<div class="text-center" style="margin-top: 15px">
+			<button class="btn btn-sm btn-default" id="moreComment" name="moreComment" type="button">더보기</button>
+		</div>
+		</c:when>
+		
+		<c:when test="${commentListSize >= totalCommentCount and commentListSize > 10}">
+		<div class="text-center" style="margin-top: 15px">
+			<button class="btn btn-sm btn-default" id="foldComment" name="foldComment" type="button">접기</button>
+		</div>
+		</c:when>
+	
+		<c:otherwise/>
 	</c:choose>
 <!--------------------------------  -->
 	</div>

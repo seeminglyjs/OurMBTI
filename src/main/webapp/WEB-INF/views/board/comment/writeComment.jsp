@@ -36,7 +36,24 @@
 	
 		<c:otherwise>
 			<div class="text-center">등록된 댓글이 없습니다.</div>
-		</c:otherwise>
+		</c:otherwise>	
+	</c:choose>
 	
+	<!-- 댓글 더보기 접기 체크 구문 -->
+	<c:choose>
+		
+		<c:when test="${commentListSize < totalCommentCount}">
+		<div class="text-center" style="margin-top: 15px">
+			<button class="btn btn-sm btn-default" id="moreComment" name="moreComment" type="button">더보기</button>
+		</div>
+		</c:when>
+		
+		<c:when test="${commentListSize >= totalCommentCount and commentListSize > 10}">
+		<div class="text-center" style="margin-top: 15px">
+			<button class="btn btn-sm btn-default" id="foldComment" name="foldComment" type="button">접기</button>
+		</div>
+		</c:when>
+	
+		<c:otherwise/>
 	</c:choose>
 <!--------------------------------  -->
