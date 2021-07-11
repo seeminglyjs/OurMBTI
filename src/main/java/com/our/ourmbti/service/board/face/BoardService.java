@@ -62,5 +62,8 @@ public interface BoardService {
 	//게시판 상세보기시 댓글 리스트의 총길이를 가져오는 메소드
 	public int getFirstCommentCount(int bNo);
 
+	//댓글을 삭제하는 메소드
+	public void deleteComment(HttpServletRequest request);
+
 
 }

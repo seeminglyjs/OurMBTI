@@ -47,19 +47,44 @@ $(document).ready(function(){
 			type: "post"
 			,url: "/board/comment/writeComment"
 			,data:{ uNo : ${sessionScope.user.uNo}
+				,commentListSize : $("#commentListSize").val()
 				,bNo : ${boardInfo.B_NO }
 				,comment : $("#comment").val()}
 			,dataType: "html"
 			,success:function(res){
 				$("#commentDiv").html(res)
+				$("#comment").val("")
 			}
 			,error:function(){
 				console.log("게시판 댓글달기 실패")
 			}
 		})
-	})
-
+	})	
 })
+
+//댓글 삭제시 호출 함수
+function deleteCno(param){
+	$.ajax({	
+		type: "post"
+		,url: "/board/comment/deleteComment"
+		,async: false
+		,data: { 
+			uNo : ${sessionScope.user.uNo}
+			,commentListSize : $("#commentListSize").val()
+			, bNo : "${boardInfo.B_NO }"
+			, cNo : $(param).children().val()
+			, delCheck : "1"
+			}
+		,dataType: "html"
+		,success: function(res){
+			$("#commentDiv").html(res)
+		}
+		,error: function(){
+			console.log("댓글 삭제 실패")
+		}
+	});	
+}
+
 </script>
 
 
@@ -244,20 +269,27 @@ $(document).ready(function(){
 	<div id="commentDiv" style="padding: 15px;">
 <!--댓글 리스트 영역  -->
 	<c:choose>
-		
 		<c:when test="${not empty commentListSize }">
+		<input type="hidden" name="commentListSize" id= "commentListSize" value="${commentListSize }">	
+			
+			<c:set value="0" var="num"></c:set><!--아이디에추가되는값  -->
 			<!-- 댓글 리스트 만큼 반복된다.  -->
 			<c:forEach begin="0" end="${commentListSize-1 }" items="${commentList }" var ="commentInfo">
+			<input type="hidden" value="${num=num+1 }"><!-- loop마다 하나씩 더해준다.  -->
 			<div style="border-bottom: 1px solid #ccc; margin-bottom: 5px;">
 				<div><strong style="font-size: 16px;">
 				${commentInfo.U_NICK }</strong></div>			
 				<div>${commentInfo.C_CONTENT }</div>
 				<div style="font-size: 10px; color: #ccc;">
 				<fmt:formatDate value="${commentInfo.C_WRITE_DATE }" pattern="yyyy/MM/dd - hh:mm"/>
-				<span id ="nestBtn" style="font-size: 12px; color: #3d5a80; cursor: pointer;">답글</span>
+				
+				<span id ="nestBtn${num }" style="font-size: 12px; color: #3d5a80; cursor: pointer;">답글</span>
+				
 				<!-- 댓글 작성자일 경우 활성화된다.  -->
 				<c:if test="${sessionScope.user.uNo eq commentInfo.U_NO}">
-				<span id ="commentDeleteBtn" style="font-size: 12px; color: red; cursor: pointer;">삭제</span>
+				<span id ="commentDeleteBtn${num }" style="font-size: 12px; color: red; cursor: pointer;" onclick="deleteCno(this)">삭제
+				<input type="hidden" value="${commentInfo.C_NO }">
+				</span>				
 				</c:if>
 				
 				</div>			
@@ -274,6 +306,7 @@ $(document).ready(function(){
 	</c:choose>
 <!--------------------------------  -->
 	</div>
+	
 </div>
 
 <%@include file="/WEB-INF/views/layout/userFooter.jsp" %>

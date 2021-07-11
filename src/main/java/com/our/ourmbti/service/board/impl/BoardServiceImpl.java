@@ -555,8 +555,15 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override //댓글 리스트를 가져오는 메소드
 	public List<HashMap<String,Object>> getCommentList(HttpServletRequest request) {
-
+		int commentListSize = 10; // 최초 댓글 리스트 길이 10 까지
+	
 		String param1 = request.getParameter("bNo");
+		String param2 = request.getParameter("delCheck"); // 댓글 삭제버튼이 눌렸는지
+			
+		if(param2 != null && !param2.equals("")) {// 댓글 삭제가 눌렸다면
+			//현재 리스트 길이 유지를 위해 리스트 길이 저장
+			commentListSize = Integer.parseInt(request.getParameter("commentListSize"));
+		}
 
 		int bNo = 0;
 
@@ -570,6 +577,7 @@ public class BoardServiceImpl implements BoardService {
 		//map에 각 변수를 담아준다.
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("bNo", bNo);
+		map.put("commentListSize", commentListSize);
 
 		//댓글리스트를 가져오는 메소드
 		List<HashMap<String,Object>> list = boardDao.selectAllList(map);
@@ -602,9 +610,12 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override// 게시판 상세보기시 댓글의 총리스트를 가져오는 메소드
 	public List<HashMap<String, Object>> getFirstCommentList(int bNo) {
+		int commentListSize = 10; // 최초 댓글 리스트 길이 10 까지
+		
 		//map에 각 변수를 담아준다.
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("bNo", bNo);
+		map.put("commentListSize", commentListSize);
 
 		//댓글리스트를 가져오는 메소드
 		List<HashMap<String,Object>> list = boardDao.selectAllList(map);
@@ -621,6 +632,24 @@ public class BoardServiceImpl implements BoardService {
 		total = boardDao.selectCommentTotalCount(bNo);
 
 		return total;
+	}
+	
+	@Override // 게시판의 댓글을 삭제하는 메소드
+	public void deleteComment(HttpServletRequest request) {
+		
+		int cNo = 0;
+		
+		String param = request.getParameter("cNo");
+		
+		try {
+			cNo = Integer.parseInt(param);
+		} catch (Exception e) {
+			logger.info("** 게시글 댓글 삭제 중 파라미터 형변환 오류 발생");
+			return;
+		}
+		
+		//게시판에 선택된 댓글을 삭제한다.
+		boardDao.deleteComment(cNo);
 	}
 }
 

@@ -298,5 +298,27 @@ public class BoardController {
 		}
 		model.addAttribute("totalCommentCount", totalCommentCount);
 	}
+	
+	
+	//댓글삭제 컨트롤러
+	@PostMapping(value="/board/comment/deleteComment")
+	public void deleteComment(HttpServletRequest request, Model model) {
+		
+		//댓글을 삭제하는 메소드
+		boardService.deleteComment(request);
+		
+		//댓글리스트를 가져오는 메소드
+		List<HashMap<String,Object>> commentList = boardService.getCommentList(request);
+		
+		//댓글의 총 길이를 가져오는 메소드
+		int totalCommentCount = boardService.getCommentCount(request);
+		
+		//댓글관련 정보 다시 전달
+		model.addAttribute("commentList", commentList);
+		if(commentList != null && !commentList.isEmpty()) {
+			model.addAttribute("commentListSize", commentList.size());
+		}
+		model.addAttribute("totalCommentCount", totalCommentCount);
+	}
 
 }

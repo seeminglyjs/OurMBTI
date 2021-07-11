@@ -133,11 +133,15 @@
 		        (select c.c_no, c.b_no, c.u_no, c_content, c_report, c_likes, c_write_date, u.u_nick from m_comment c, m_user u where 
 		        c.u_no = u.u_no and
 		        b_no = #{bNo} order by c_no desc) c1) c2 
-		where rnum between 1 and 10
+		where rnum between 1 and #{commentListSize}
 	</select>
 	
 	<select id="selectCommentTotalCount" parameterType="int" resultType="int">
 		select count(*) from m_comment where b_no = #{bNo}
 	</select>
+	
+	<delete id="deleteComment" parameterType="int">
+		delete m_comment where c_no = #{cNo}
+	</delete>
 	
 </mapper>

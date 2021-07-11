@@ -75,4 +75,7 @@ public interface BoardDao {
 	//해당 게시글의 전체 댓글 수를 가져오는 메소드
 	public int selectCommentTotalCount(int bNo);
 
+	//댓글을 삭제하는 메소드
+	public void deleteComment(int cNo);
+
 }
