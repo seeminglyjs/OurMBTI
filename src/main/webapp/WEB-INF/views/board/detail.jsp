@@ -49,7 +49,8 @@ $(document).ready(function(){
 			,data:{ uNo : ${sessionScope.user.uNo}
 				,commentListSize : $("#commentListSize").val()
 				,bNo : ${boardInfo.B_NO }
-				,comment : $("#comment").val()}
+				,comment : $("#comment").val()
+				}
 			,dataType: "html"
 			,success:function(res){
 				$("#commentDiv").html(res)
@@ -101,6 +102,7 @@ $(document).ready(function(){
 		})
 	})
 	
+	/*---------------------------------------------------------  */
 	
 })
 
@@ -126,6 +128,59 @@ function deleteCno(param){
 		}
 	});	
 }
+
+//답글 버튼 클릭시
+function clickNestComment(param){
+	
+	/* 파라미터 아이디에서 번호부분만 추출  */
+	var paramId= $(param).attr('id');
+	var paramNo=paramId.replace(/[^0-9]/g,'');
+	
+	/*divId 찾아오기  */
+	var divId = '#nestDiv' + paramNo
+	
+	if($(divId).css('display') === 'none'){
+		console.log('sdsd')
+		$(divId).css('display', 'block')	
+	}else{
+		$(divId).css('display', 'none')
+	}
+	
+}
+
+
+//답글 달기 ajax 함수
+function enrollNestComment(param){	
+	
+	/* 파라미터 아이디에서 번호부분만 추출  */
+	var paramId= $(param).attr('id');
+	var paramNo=paramId.replace(/[^0-9]/g,'');
+	
+	/*Input id 찾아오기  */
+	var inputId = '#nestComment' + paramNo
+	/* 댓글 번호 id가져오기 */
+	var commentNo = '#comment' + paramNo
+	
+	$.ajax({
+		type: "post"
+		,url: "/board/nestComment/writeComment"
+		,data:{ uNo : ${sessionScope.user.uNo}
+			,nestCommentListSize : $("#nestCommentListSize").val()
+			,bNo : ${boardInfo.B_NO }
+			,cNo : $(commentNo).val()
+			,nestComment : $(inputId).val()
+			}
+		,dataType: "html"
+		,success:function(res){
+			$("#commentDiv").html(res)
+			$("#comment").val("")
+		}
+		,error:function(){
+			console.log("게시판 댓글달기 실패")
+		}
+	})
+}
+
 
 </script>
 
@@ -325,14 +380,37 @@ function deleteCno(param){
 				<div style="font-size: 10px; color: #ccc;">
 				<fmt:formatDate value="${commentInfo.C_WRITE_DATE }" pattern="yyyy/MM/dd - hh:mm"/>
 				
-				<span id ="nestBtn${num }" style="font-size: 12px; color: #3d5a80; cursor: pointer;">답글</span>
-				
+				<!--답글버튼  -->
+				<span id ="nestBtn${num }" style="font-size: 12px; color: #3d5a80; cursor: pointer;" onclick="clickNestComment(this)">답글</span>
+		
 				<!-- 댓글 작성자일 경우 활성화된다.  -->
 				<c:if test="${sessionScope.user.uNo eq commentInfo.U_NO}">
 				<span id ="commentDeleteBtn${num }" style="font-size: 12px; color: red; cursor: pointer;" onclick="deleteCno(this)">삭제
 				<input type="hidden" value="${commentInfo.C_NO }">
 				</span>				
 				</c:if>
+				
+				
+				<!--대댓글 쓰기 영역  -->
+				<div id="nestDiv${num }" style="margin-top: 10px; display: none" class="text-center">
+					  <div class="form-group">
+					    <label for="comment"></label>
+					    <input type="text" class="form-control" id="nestComment${num }" name="nestComment" placeholder="댓글을 달아보세요." style="width: 90%; display: inline-block;">
+					  	<input type="hidden" id="commentNo${num }" name="cNo" value="${commentInfo.C_NO }">
+					  	<button id="nestCommentBtn${num }" class="btn btn-default btn-sm" onclick="enrollNestComment(this)">등록</button>
+					  </div>
+					  <c:choose>
+					  	<c:when test="${not empty nestCommentListSize }">
+					  	
+					  	</c:when>
+					  
+					  	<c:otherwise>
+					  	
+					  	</c:otherwise>
+					  
+					  </c:choose>	  
+				</div>
+				
 				
 				</div>			
 			</div>
