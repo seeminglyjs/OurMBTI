@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!--temp1 내용 변경  -->
-<!--내용수정temp2  -->
-<!--내용수정temp2 2 -->
 	<c:choose>
 
 		<c:when test="${likeCheck }">
